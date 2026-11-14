@@ -25,7 +25,7 @@ export default async function AdminPage() {
           <div>
             <p className="eyebrow">Abundant Home</p>
             <h1>Admin</h1>
-            <p className="adm-sub">Last 30 days, Pacific time · updated {updated}</p>
+            <p className="adm-sub">Last 30 days, Pacific time · updated {updated} · <a href="/admin/emails">Preview emails</a></p>
           </div>
           <form method="post" action="/api/admin/logout"><button className="btn btn-ghost" type="submit">Sign out</button></form>
         </header>

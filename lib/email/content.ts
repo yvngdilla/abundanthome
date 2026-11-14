@@ -1,5 +1,6 @@
 import { site, pages } from "@/lib/site";
 import { products, formatPrice } from "@/lib/shop";
+import type { Design } from "@/lib/email/layout";
 
 // Every email Abundant Home sends, in Nancy's voice. These are drafts for Nancy to edit: change the words here,
 // keep the structure. Body format: see lib/email/layout.ts.
@@ -10,7 +11,7 @@ import { products, formatPrice } from "@/lib/shop";
 //   (dc-0-late for people who join after the January start), dc-1 to dc-5 on the five challenge days, then the workbook offer (day 7) and the room review (day 10).
 //   People who join after the January challenge start their own five days the morning after they sign up.
 
-export type EmailDef = { key: string; subject: string; preheader: string; body: (u: string) => string };
+export type EmailDef = { key: string; subject: string; preheader: string; design: Design; body: (u: string) => string };
 
 const sign = `Make room for it,
 Nancy`;
@@ -23,6 +24,7 @@ export const emails: Record<string, EmailDef> = {
   // Vision board list
   "vb-0": {
     key: "vb-0",
+    design: { eyebrow: "Welcome", title: "Your board, and where to put it", accent: "wood" },
     subject: "Your vision board, and where to put it",
     preheader: "The step that decides whether a board works: where it lives.",
     body: (u) => `
@@ -42,6 +44,7 @@ ${sign}`,
   },
   "vb-1": {
     key: "vb-1",
+    design: { eyebrow: "Vision board notes", accent: "wood" },
     subject: "Write it before you pin it",
     preheader: "The step most people skip, and why boards that skip it end up in a drawer.",
     body: (u) => `
@@ -59,6 +62,7 @@ ${sign}`,
   },
   "vb-2": {
     key: "vb-2",
+    design: { eyebrow: "Vision board notes", accent: "wood" },
     subject: "Your board is only as strong as the room around it",
     preheader: "One small change to the wall your board hangs on.",
     body: (u) => `
@@ -76,6 +80,7 @@ ${sign}`,
   },
   "vb-3": {
     key: "vb-3",
+    design: { eyebrow: "Vision board notes", accent: "wood" },
     subject: "The colors your board keeps choosing",
     preheader: "Your vision board is quietly telling you how to paint.",
     body: (u) => `
@@ -91,6 +96,7 @@ ${sign}`,
   },
   "vb-4": {
     key: "vb-4",
+    design: { eyebrow: "From the Guide", accent: "wood", product: "vision-board-workbook" },
     subject: "The workbook behind my vision board method",
     preheader: `The Vision Board Workbook from The Guide to Living in Abundance, ${formatPrice(vb.price)}.`,
     body: (u) => `
@@ -108,6 +114,7 @@ ${sign}`,
   },
   "vb-5": {
     key: "vb-5",
+    design: { eyebrow: "Work with Nancy", accent: "wood", product: "room-review" },
     subject: "Want me to look at your room?",
     preheader: "A written plan for one room, from me, based on your photos.",
     body: (u) => `
@@ -125,6 +132,7 @@ ${sign}`,
   // Declutter challenge list
   "dc-0": {
     key: "dc-0",
+    design: { eyebrow: "5-day declutter challenge", title: "You're in", accent: "fire" },
     subject: "You're in: the 5-day declutter challenge",
     preheader: `Day one arrives the morning of ${site.challengeStart}. Here is how to get ready.`,
     body: () => `
@@ -142,6 +150,7 @@ ${sign}`,
   },
   "dc-0-late": {
     key: "dc-0-late",
+    design: { eyebrow: "5-day declutter challenge", title: "You're in", accent: "fire" },
     subject: "You're in: the 5-day declutter challenge",
     preheader: "Day one arrives tomorrow morning. Here is how to get ready.",
     body: () => `
@@ -159,6 +168,7 @@ ${sign}`,
   },
   "dc-wait": {
     key: "dc-wait",
+    design: { eyebrow: "While you wait", title: "Make room for your board", accent: "fire" },
     subject: "While you wait: make room for your board",
     preheader: "A small warm-up before the challenge starts.",
     body: (u) => `
@@ -172,6 +182,7 @@ ${sign}`,
   },
   "dc-1": {
     key: "dc-1",
+    design: { eyebrow: "Declutter challenge · Day 1 of 5", title: "Your nightstand", accent: "fire", day: 1 },
     subject: "Day 1: your nightstand",
     preheader: "The first and last thing you see every day.",
     body: () => `
@@ -187,6 +198,7 @@ ${sign}`,
   },
   "dc-2": {
     key: "dc-2",
+    design: { eyebrow: "Declutter challenge · Day 2 of 5", title: "One kitchen drawer", accent: "fire", day: 2 },
     subject: "Day 2: one kitchen drawer",
     preheader: "Just one. Really.",
     body: () => `
@@ -200,6 +212,7 @@ ${sign}`,
   },
   "dc-3": {
     key: "dc-3",
+    design: { eyebrow: "Declutter challenge · Day 3 of 5", title: "Your entry", accent: "fire", day: 3 },
     subject: "Day 3: your entry",
     preheader: "Everything comes in through the door, including you.",
     body: () => `
@@ -213,6 +226,7 @@ ${sign}`,
   },
   "dc-4": {
     key: "dc-4",
+    design: { eyebrow: "Declutter challenge · Day 4 of 5", title: "One closet category", accent: "fire", day: 4 },
     subject: "Day 4: one closet category",
     preheader: "Keep the ones you reach for.",
     body: () => `
@@ -226,6 +240,7 @@ ${sign}`,
   },
   "dc-5": {
     key: "dc-5",
+    design: { eyebrow: "Declutter challenge · Day 5 of 5", title: "The spot you avoid", accent: "fire", day: 5 },
     subject: "Day 5: the spot you avoid",
     preheader: "And a home for your vision board.",
     body: (u) => `
@@ -243,6 +258,7 @@ ${sign}`,
   },
   "dc-6": {
     key: "dc-6",
+    design: { eyebrow: "After the challenge", accent: "fire", product: "declutter-workbook" },
     subject: "If you want to keep going",
     preheader: `The Declutter Workbook from The Guide to Living in Abundance, ${formatPrice(dc.price)}.`,
     body: (u) => `
@@ -260,6 +276,7 @@ ${sign}`,
   },
   "dc-7": {
     key: "dc-7",
+    design: { eyebrow: "Work with Nancy", accent: "fire", product: "room-review" },
     subject: "Want me to look at your room?",
     preheader: "A written plan for one room, from me, based on your photos.",
     body: (u) => `
@@ -277,8 +294,10 @@ ${sign}`,
 
 // Purchase emails. Not part of a sequence: sent once, when Stripe confirms payment.
 export function workbookDelivery(slug: string, name: string, links: { label: string; url: string }[]): EmailDef {
+  name = name.replace(/^The /, ""); // "Your Vision Board Workbook", not "Your The Vision Board Workbook"
   return {
     key: `order-${slug}`,
+    design: { eyebrow: "Your order", title: "Your workbook is ready", accent: "earth" },
     subject: `Your ${name}`,
     preheader: "Your download links are inside.",
     body: () => `
@@ -299,6 +318,7 @@ ${sign}`,
 export function roomReviewConfirmation(session: string): EmailDef {
   return {
     key: `order-room-review-${session.slice(-10)}`,
+    design: { eyebrow: "Your room review", title: "What to send me", accent: "wood" },
     subject: "Your room review: what to send me",
     preheader: "Reply to this email with your photos and a few answers.",
     body: () => `
@@ -318,6 +338,40 @@ I send your written plan within [TURNAROUND] of receiving your photos, and you c
 ${sign}`,
   };
 }
+
+// Account emails. Supabase sends these (sign-in is Supabase Auth), so they are built into HTML files in
+// supabase/templates by "npm run emails:auth" and pasted into Supabase. {{ .ConfirmationURL }} is filled in by Supabase.
+const signInBody = (lead: string) => `
+Hi,
+
+${lead}
+
+[Sign in to Abundant Home]({{ .ConfirmationURL }})
+
+This link works once and expires in an hour. Open it on the same phone or computer you asked from.
+
+If you did not ask for this, you can ignore this email. Nobody can get into your account without the link.
+
+${sign}`;
+
+export const authEmails: Record<string, EmailDef & { file: string }> = {
+  "auth-magic-link": {
+    key: "auth-magic-link",
+    file: "magic-link.html",
+    subject: "Your sign-in link for Abundant Home",
+    preheader: "One tap and you are in. No password needed.",
+    design: { eyebrow: "Your account", title: "Your sign-in link", accent: "water" },
+    body: () => signInBody("Here is your sign-in link. One tap and you are in, no password needed. Your workbooks and email settings are waiting in your account."),
+  },
+  "auth-confirm-signup": {
+    key: "auth-confirm-signup",
+    file: "confirm-signup.html",
+    subject: "Welcome to Abundant Home: confirm your email",
+    preheader: "One tap to finish setting up your account.",
+    design: { eyebrow: "Your account", title: "Welcome home", accent: "water" },
+    body: () => signInBody("Welcome. Tap the button to confirm your email and finish setting up your account. Anything you have bought with this email address will be waiting for you there."),
+  },
+};
 
 export type ListName = "vision-board" | "declutter-challenge";
 
