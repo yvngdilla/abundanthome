@@ -14,7 +14,7 @@ const pct = (n: number) => `${Math.round(n * 100)}%`;
 const money = (cents: number) => "$" + Math.round(cents / 100).toLocaleString("en-US");
 
 export default async function AdminPage() {
-  if (!(await isAdmin()) && process.env.ADMIN_DEMO !== "1") redirect("/admin/login");
+  if (!(await isAdmin())) redirect("/admin/login");
   const d = await getDashboard();
   const updated = new Date().toLocaleString("en-US", { timeZone: "America/Los_Angeles", dateStyle: "medium", timeStyle: "short" });
 
