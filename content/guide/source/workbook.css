@@ -63,7 +63,7 @@ strong { font-weight: 600; }
 
 /* Part openers */
 .part-head { display: flex; align-items: flex-end; gap: 18px; margin-bottom: 26px; padding-bottom: 18px; border-bottom: 1px solid var(--metal); }
-.part-head .badge { width: 62px; height: 78px; background: var(--accent); color: var(--on-accent); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 36px; font-family: "Display", serif; font-size: 26pt; line-height: 1; flex: none; }
+.part-head .badge { width: 62px; height: 78px; background: var(--accent); color: var(--on-accent); display: flex; align-items: center; justify-content: center; padding-top: 6px; font-family: "Display", serif; font-size: 26pt; line-height: 1; flex: none; }
 .part-head .t .eyebrow { margin-bottom: 4px; }
 .part-head h2 { margin: 0; font-size: 32pt; }
 
