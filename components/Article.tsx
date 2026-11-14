@@ -1,3 +1,4 @@
+import { Toc } from "@/components/Toc";
 import { WorkbookCTA } from "@/components/WorkbookCTA";
 import { JsonLd } from "./JsonLd";
 import { site, type PageMeta } from "@/lib/site";
@@ -54,16 +55,7 @@ export function Article({ meta, eyebrow, heading, lede, accent = "wood", toc, up
             {children}
             <WorkbookCTA path={meta.path} />
           </div>
-          {toc && (
-            <aside className="toc no-print" aria-label="On this page">
-              <p className="eyebrow">On this page</p>
-              <ol>
-                {toc.map((t) => (
-                  <li key={t.id}><a href={`#${t.id}`}>{t.label}</a></li>
-                ))}
-              </ol>
-            </aside>
-          )}
+          {toc && <Toc items={toc} />}
         </div>
       </div>
     </article>
