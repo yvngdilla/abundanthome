@@ -9,7 +9,7 @@ import { pages, site } from "@/lib/site";
 const DISMISSED_KEY = "ah_modal_dismissed_at";
 const QUIET_DAYS = 14; // after someone closes it, wait this long before showing it again
 const DELAY_MS = 40_000; // or after this long on a page
-const SCROLL_DEPTH = 0.5; // or once they have read half the page
+const SCROLL_DEPTH = 0.6; // or once they are past the mid-article form
 
 // Pages where the modal never appears: the challenge page already is the sign-up.
 const NEVER = new Set<string>([pages.challenge.path, "/privacy-policy"]);
@@ -28,6 +28,14 @@ function shouldSkip(): boolean {
   if (readStore(SIGNED_UP_KEY)) return true;
   const dismissed = Number(readStore(DISMISSED_KEY));
   return Boolean(dismissed) && Date.now() - dismissed < QUIET_DAYS * 86_400_000;
+}
+
+// An inline sign-up form is already on screen: the popup would only cover it.
+function inlineFormVisible(): boolean {
+  return Array.from(document.querySelectorAll("main .signup")).some((el) => {
+    const r = el.getBoundingClientRect();
+    return r.bottom > 0 && r.top < window.innerHeight;
+  });
 }
 
 function copyFor(path: string) {
@@ -69,6 +77,7 @@ export function SignupModal() {
       // Never cover a field someone is typing in.
       const active = document.activeElement;
       if (active && /^(INPUT|TEXTAREA|SELECT)$/.test(active.tagName)) return;
+      if (trigger !== "exit" && inlineFormVisible()) return;
       shown.current = true;
       dialog.showModal();
       track("modal_view", { trigger, path });

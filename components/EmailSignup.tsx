@@ -14,6 +14,7 @@ type Props = {
   note?: string;
   source?: string; // where on the page the form sits, for analytics: "inline" or "modal"
   headingId?: string;
+  tone?: "dark" | "light"; // light: the quieter mid-article version
   onDone?: () => void;
 };
 
@@ -31,6 +32,7 @@ export function EmailSignup({
   note = "One email a day during the challenge, then occasional notes from Nancy. Unsubscribe anytime.",
   source = "inline",
   headingId,
+  tone = "dark",
   onDone,
 }: Props) {
   const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
@@ -73,7 +75,7 @@ export function EmailSignup({
   }
 
   return (
-    <section className="signup no-print" aria-live="polite">
+    <section className={`signup no-print${tone === "light" ? " signup-light" : ""}`} aria-live="polite">
       {eyebrow && <p className="eyebrow">{eyebrow}</p>}
       <H id={headingId}>{heading}</H>
       {state === "done" ? (
@@ -83,7 +85,7 @@ export function EmailSignup({
           <p>{body}</p>
           <form onSubmit={onSubmit}>
             <label className="visually-hidden" htmlFor={`email-${id}`}>Email address</label>
-            <input id={`email-${id}`} name="email" type="email" required autoComplete="email" placeholder="Your email" autoFocus={source === "modal"} />
+            <input id={`email-${id}`} name="email" type="email" required autoComplete="email" placeholder="Your email" autoFocus={source !== "inline"} />
             <input name="company" type="text" tabIndex={-1} autoComplete="off" className="visually-hidden" aria-hidden="true" />
             <button className="btn" type="submit" disabled={state === "sending"}>
               {state === "sending" ? "Saving..." : button}

@@ -158,6 +158,17 @@ export default function Page() {
         up? What can you smell? What are you wearing? Let yourself feel it. The board should hold that feeling.
       </p>
 
+      <EmailSignup
+        list="declutter-challenge"
+        tone="light"
+        as="h3"
+        eyebrow={`Free 5-day challenge · Starts ${site.challengeStart}`}
+        heading="Clear a space for your board"
+        body="Before you start arranging, join the free declutter challenge: fifteen minutes a day, ending with the spot where your board will hang."
+        button="Join the challenge"
+        success="You are in. Watch your inbox for day one."
+      />
+
       <h2 id="select">5. Select and arrange your images</h2>
       <p>
         Go through your pile and keep only the images that match what you wrote. Pick one image as the focal point,
