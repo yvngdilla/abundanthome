@@ -44,3 +44,13 @@ of `public/`, and keep this repository private.
 npm install
 npm run dev
 ```
+
+## Emails
+
+Every email goes through one branded template, `lib/email/layout.ts`, and is sent with Resend (`lib/email/send.ts`).
+The words live in `lib/email/content.ts`. Preview all of them at `/admin/emails`. Nothing sends until
+`EMAIL_SENDING_ENABLED=true`.
+
+The account sign-in emails are sent by Supabase Auth. `npm run emails:auth` rebuilds `supabase/templates/*.html`
+from the same template; paste them into Supabase (Authentication, Emails: Magic Link and Confirm signup) and set
+Supabase's custom SMTP to Resend so they come from Abundant Home.
