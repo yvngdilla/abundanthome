@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { pages } from "@/lib/site";
+import { nav } from "@/lib/nav";
+import { MobileMenu } from "@/components/MobileMenu";
 
 export function Header() {
   return (
@@ -11,11 +13,29 @@ export function Header() {
           <span className="brand-name">Abundant Home</span>
         </Link>
         <nav className="nav" aria-label="Main">
-          <Link href={pages.ideas.path}>Vision boards</Link>
-          <Link href={pages.bedroomColors.path}>Bedroom colors</Link>
-          <Link href={pages.challenge.path}>Declutter challenge</Link>
-          <Link className="btn" href={pages.template.path}>Free vision board template</Link>
+          {nav.map((g) => (
+            <div key={g.label} className="nav-group">
+              <Link href={g.href ?? g.items[0].href} className="nav-top" aria-haspopup="true">
+                {g.label}
+                <svg width="10" height="6" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.5" /></svg>
+              </Link>
+              <div className="nav-menu">
+                <ul>
+                  {g.items.map((i) => (
+                    <li key={i.href + i.label}>
+                      <Link href={i.href}>
+                        <span className="nav-label">{i.label}</span>
+                        {i.note && <span className="nav-note">{i.note}</span>}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+          <Link className="btn nav-cta" href={pages.template.path}>Free vision board template</Link>
         </nav>
+        <MobileMenu />
       </div>
     </header>
   );
