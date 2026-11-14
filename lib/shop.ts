@@ -9,7 +9,7 @@ export type Product = {
   name: string;
   short: string; // one line for cards and checkout
   price: number; // cents
-  key?: string; // which key of the guide it comes from
+  key?: string; // which key of the guide it comes from (internal only, not shown on the site)
   accent: "wood" | "fire" | "earth";
   intro: string;
   includes: string[];

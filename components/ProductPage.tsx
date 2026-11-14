@@ -38,7 +38,7 @@ export function ProductPage({ product, path, faqs, children }: { product: Produc
       <section className="hero">
         <div className="wrap hero-grid">
           <div>
-            <p className="eyebrow">{isService ? "Work with Nancy" : product.key}</p>
+            <p className="eyebrow">{isService ? "Work with Nancy" : "From The Guide to Living in Abundance"}</p>
             <h1>{product.name}</h1>
             <p className="lede" style={{ marginTop: 16 }}>{product.intro}</p>
             <p className="price">{formatPrice(product.price)}</p>

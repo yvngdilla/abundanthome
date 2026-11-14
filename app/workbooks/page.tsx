@@ -33,7 +33,6 @@ export default function Page() {
           {workbooks.map((w) => (
             <Link key={w.slug} className="card-link" href={`/workbooks/${w.slug}`}>
               <div className="card">
-                <p className="eyebrow">{w.key?.replace(" of The Guide to Living in Abundance", "")}</p>
                 <h3>{w.name}</h3>
                 <p>{w.short}</p>
                 <p className="more">{formatPrice(w.price)} · See what is inside</p>
