@@ -166,6 +166,17 @@ export default function Page() {
         Save bright red for small touches.
       </p>
 
+      <EmailSignup
+        list="declutter-challenge"
+        tone="light"
+        as="h3"
+        eyebrow={`Free 5-day challenge · Starts ${site.challengeStart}`}
+        heading="Start with a clear room"
+        body="A new color shows best in an uncluttered room. Join the free 5-day declutter challenge, starting with your nightstand."
+        button="Join the challenge"
+        success="You are in. Watch your inbox for day one."
+      />
+
       <h2 id="build">Build your bedroom palette in 3 steps</h2>
       <ol>
         <li>

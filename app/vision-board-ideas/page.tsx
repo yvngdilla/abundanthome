@@ -152,6 +152,17 @@ export default function Page() {
         </li>
       </ol>
 
+      <EmailSignup
+        list="declutter-challenge"
+        tone="light"
+        as="h3"
+        eyebrow={`Free 5-day challenge · Starts ${site.challengeStart}`}
+        heading="Make room for your board before you make it"
+        body="Fifteen minutes a day to clear one small space at a time. On day five we clear the spot where your vision board will live."
+        button="Join the challenge"
+        success="You are in. Watch your inbox for day one."
+      />
+
       <h2 id="formats">Ideas for the board itself</h2>
       <p>
         Your vision board does not have to be a board. It needs to be something you can reach easily and that

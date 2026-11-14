@@ -198,7 +198,9 @@ a.step:hover { border-color: var(--water); }
 .card { background: var(--white); border: 1px solid var(--metal); padding: var(--space-6); border-radius: var(--radius-sm); }
 .card h3 { margin-top: 0; }
 .card a.more { font-weight: 600; }
-.card-link { text-decoration: none; color: inherit; display: block; }
+.card-link { text-decoration: none; color: inherit; display: flex; }
+.card-link .card { flex: 1; display: flex; flex-direction: column; }
+.card .more { margin-top: auto; padding-top: var(--space-3); margin-bottom: 0; font-weight: 600; font-size: 0.95rem; color: var(--water); }
 .card-link:hover .card { border-color: var(--water); }
 
 .section { padding: var(--space-12) 0; }
@@ -250,6 +252,14 @@ table.simple th { font-weight: 600; }
 .signup .btn { background: var(--earth); border-color: var(--earth); color: var(--water); }
 .signup .btn:hover { filter: brightness(1.06); }
 .signup .eyebrow { color: var(--earth); }
+/* Mid-article version: quieter, so it reads as part of the page rather than its end */
+.signup-light { background: var(--metal); color: var(--water); border-top: 3px solid var(--earth); }
+.signup-light p { color: var(--water); }
+.signup-light .eyebrow { color: var(--ink-muted); }
+.signup-light input[type="email"] { border-color: var(--water); background: var(--white); color: var(--water); }
+.signup-light input::placeholder { color: var(--ink-muted); }
+.signup-light .btn { background: var(--water); border-color: var(--water); color: var(--surface); }
+.signup-light .btn:hover { background: #2f4154; filter: none; }
 .signup .note { font-size: 0.85rem; margin-top: var(--space-3); margin-bottom: 0; }
 
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

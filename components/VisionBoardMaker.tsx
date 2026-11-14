@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { track } from "@/lib/track";
+import { EmailGate, hasUnlocked } from "@/components/EmailGate";
 
 type Kind = "image" | "word";
 type CellDef = { x: number; y: number; w: number; h: number; label: string; kind: Kind };
@@ -111,6 +112,7 @@ export function VisionBoardMaker() {
   const [content, setContent] = useState<Record<string, CellContent>>({});
   const [active, setActive] = useState<number | null>(null);
   const [busy, setBusy] = useState(false);
+  const [gateOpen, setGateOpen] = useState(false);
   const fontProbe = useRef<HTMLSpanElement>(null);
   const fileInput = useRef<HTMLInputElement>(null);
 
@@ -134,6 +136,12 @@ export function VisionBoardMaker() {
     reader.onload = () => update(i, { src: String(reader.result), text: undefined });
     reader.readAsDataURL(file);
     e.target.value = "";
+  }
+
+  // Free downloads are email-gated: the first download asks for an email, later ones go straight through.
+  function requestDownload() {
+    if (hasUnlocked()) download();
+    else setGateOpen(true);
   }
 
   async function download() {
@@ -317,14 +325,27 @@ export function VisionBoardMaker() {
             </>
           )}
           <hr />
-          <button type="button" className="btn" onClick={download} disabled={busy} style={{ width: "100%" }}>
+          <button type="button" className="btn" onClick={requestDownload} disabled={busy} style={{ width: "100%" }}>
             {busy ? "Making your board..." : `Download ${SIZES[sizeId].label.toLowerCase()}`}
           </button>
           <p className="vbm-note">
-            Empty squares download as labeled outlines, so a printed board can be filled in by hand.
+            Free. Enter your email once to download. Empty squares download as labeled outlines, so a printed board
+            can be filled in by hand.
           </p>
         </div>
       </div>
+      <EmailGate
+        open={gateOpen}
+        item="vision-board"
+        heading="Your board is ready"
+        body={`Enter your email and your ${SIZES[sizeId].label.toLowerCase()} downloads right away.`}
+        button="Download my board"
+        onUnlock={() => {
+          setGateOpen(false);
+          download();
+        }}
+        onCancel={() => setGateOpen(false)}
+      />
     </div>
   );
 }

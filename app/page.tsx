@@ -218,6 +218,7 @@ export default function Home() {
                   <p className="eyebrow">{c.eyebrow}</p>
                   <h3>{c.title}</h3>
                   <p>{c.text}</p>
+                  <p className="more">Read more →</p>
                 </div>
               </Link>
             ))}
