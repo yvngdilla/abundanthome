@@ -2,6 +2,7 @@ import Link from "next/link";
 import { pages } from "@/lib/site";
 import { nav } from "@/lib/nav";
 import { MobileMenu } from "@/components/MobileMenu";
+import { HeaderScroll } from "@/components/HeaderScroll";
 
 export function Header() {
   return (
@@ -37,6 +38,7 @@ export function Header() {
         </nav>
         <MobileMenu />
       </div>
+      <HeaderScroll />
     </header>
   );
 }
