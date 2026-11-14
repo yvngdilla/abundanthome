@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { DM_Serif_Display, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -8,9 +8,9 @@ import { SignupModal } from "@/components/SignupModal";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const serif = Cormorant_Garamond({
+const serif = DM_Serif_Display({
   subsets: ["latin"],
-  weight: ["500", "600"],
+  weight: "400",
   style: ["normal", "italic"],
   variable: "--font-serif",
   display: "swap",

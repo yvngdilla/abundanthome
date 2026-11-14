@@ -72,6 +72,10 @@ export function ProductPage({ product, path, faqs, children }: { product: Produc
           {children}
           <h2>About {site.author.name}</h2>
           <p>{site.author.bio}</p>
+          <blockquote className="mantra">
+            “{site.mantra}”
+            <cite>{site.author.name}</cite>
+          </blockquote>
 
           <h2>Common questions</h2>
           {faqs.map((f) => (

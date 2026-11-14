@@ -60,7 +60,7 @@ export default function Home() {
         <div className="wrap hero-grid">
           <div>
             <p className="eyebrow">{site.tagline}</p>
-            <h1>Your home is the key to manifesting more</h1>
+            <h1>Your <span className="home-word">home</span> is the key to manifesting more</h1>
             <p className="lede" style={{ marginTop: 20 }}>
               You journal. You script. You made the vision board. Then you walk back into a room that tells the old
               story. Interior designer {site.author.name} shows you how to make your home part of what you are calling
@@ -201,6 +201,10 @@ export default function Home() {
               Everything here starts the way a design project does: with what you want your life to feel like. Then
               every color, placement and object gets a reason.
             </p>
+            <blockquote className="mantra">
+              “{site.mantra}”
+              <cite>{site.author.name}</cite>
+            </blockquote>
           </div>
         </div>
       </section>

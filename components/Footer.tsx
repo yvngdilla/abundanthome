@@ -12,6 +12,7 @@ export function Footer() {
             <p className="brand-name">Abundant Home</p>
             <p className="tagline">{site.tagline}</p>
             <p className="bio">{site.author.bio}</p>
+            <p className="mantra">“{site.mantra}”</p>
           </div>
           <div>
             <h3>Vision boards</h3>

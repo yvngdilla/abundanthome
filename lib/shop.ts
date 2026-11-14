@@ -54,16 +54,17 @@ export const products: Record<string, Product> = {
     intro:
       "Your style is not a trend you follow. It is how the life you want looks and feels. This workbook walks you through the music, places, materials and images that light you up, and turns them into a personal style guide you can shop and decorate from.",
     includes: [
-      "The Define Your Style workbook, step by step",
-      "Exercises to build your own personalized style guide",
-      "How to use your style guide for every purchase that follows",
+      "Part 1, Remember it: the places and outfits that show your real style",
+      "Part 2, Name it: turn up to five feelings into one Style Word",
+      "Part 3, Use it: the one-question test for every purchase",
+      "Three fill-in pages, including a word bank and a style test log",
     ],
     forYou: [
       "You like a lot of styles and cannot tell which one is yours",
       "Your home feels like a mix of things you bought at different times",
       "You want rooms that feel like the future you, not the past you",
     ],
-    files: [{ file: "K2-E3.pdf", label: "Define Your Style workbook" }],
+    files: [{ file: "Define-Your-Style-Workbook-AH.pdf", label: "The Define Your Style Workbook" }],
     related: [],
   },
   "declutter-workbook": {
@@ -77,47 +78,41 @@ export const products: Record<string, Product> = {
     intro:
       "The full version of the 5-day challenge. Start with an honest, heart-centered look at your home, purge with a purpose rather than a rule, then set up storage that keeps the space clear without hiding the things you love.",
     includes: [
-      "Heart-Centered Reality Check: see your home as it is, and how it makes you feel",
-      "Purge With Purpose: a room-by-room method for letting go at your own pace",
-      "Mindful Storage: keep what you love without it crowding what is next",
+      "Part 1, Look: a heart-centered walk through your home, starting at the front door",
+      "Part 2, Clear: the seven-bag method, 15 minutes at a time",
+      "Part 3, Keep: active and passive zones, and a home for everything",
+      "Three fill-in pages: reality check, Maybe box and home shop, zone plan",
     ],
     forYou: [
       "You finished the 5-day challenge and want to keep going",
       "You feel stuck, and your home feels full",
       "You want to declutter without throwing away the things that matter",
     ],
-    files: [
-      { file: "K3-E1.pdf", label: "Heart-Centered Reality Check workbook" },
-      { file: "K3-E2.pdf", label: "Purge With Purpose workbook" },
-      { file: "K3-E3.pdf", label: "Mindful Storage workbook" },
-    ],
+    files: [{ file: "Declutter-Workbook-AH.pdf", label: "The Declutter Workbook" }],
     related: ["/declutter-challenge"],
   },
   "color-workbook": {
     slug: "color-workbook",
     kind: "workbook",
     name: "The Color Workbook",
-    short: "Choose colors for what you want next, with Nancy's color wheel and sensory chart.",
+    short: "Choose colors for what you want next, with Nancy's color wheel and sensory chart inside.",
     price: 1700,
     key: "Key 5 of The Guide to Living in Abundance",
     accent: "earth",
     intro:
       "Color is the fastest way to change how a room feels, and the easiest place to go wrong. This workbook teaches the color theory a designer uses, why certain colors make you feel the way they do, and how to choose a palette that matches your intentions.",
     includes: [
-      "The Color workbook: color theory and choosing with intention",
-      "The Abundant Home color wheel",
-      "The sensory chart, to connect each color to how you want to feel",
+      "Part 1, Learn it: warm and cool, and how colors work together, in plain words",
+      "Part 2, Choose it: a four-color palette built around what you want",
+      "Part 3, Use it: where each color goes, and how to test before you paint",
+      "Nancy's Abundant Home color wheel and sensory chart, plus two fill-in pages",
     ],
     forYou: [
       "You are about to paint and cannot decide",
       "You love color but your rooms never come together",
       "You want each room's colors to support what you want in it",
     ],
-    files: [
-      { file: "K5-E1-AH-FINAL.pdf", label: "Color workbook" },
-      { file: "Color-Wheel-AH-V2.pdf", label: "Abundant Home color wheel" },
-      { file: "Sensory-Chart-AH-k3ap.pdf", label: "Sensory chart" },
-    ],
+    files: [{ file: "Color-Workbook-AH.pdf", label: "The Color Workbook" }],
     related: ["/bedroom-colors"],
   },
   "room-review": {
