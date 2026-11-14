@@ -3,8 +3,9 @@ import type { NextConfig } from "next";
 // Nancy's existing Squarespace site (member course, checkouts, ad landing pages) keeps running at its own address
 // after abundanthomedesign.com moves to Vercel. Set LEGACY_SITE_ORIGIN to that address, for example
 // https://members.abundanthomedesign.com, and every old URL below forwards there, path included.
-// Leave it unset and no redirects are added.
-const LEGACY = process.env.LEGACY_SITE_ORIGIN?.replace(/\/$/, "");
+// Defaults to the members subdomain; set LEGACY_SITE_ORIGIN to "off" to disable the redirects.
+const LEGACY_RAW = process.env.LEGACY_SITE_ORIGIN ?? "https://members.abundanthomedesign.com";
+const LEGACY = LEGACY_RAW === "off" ? "" : LEGACY_RAW.replace(/\/$/, "");
 
 // Every path on the old Squarespace site that the new site does not replace (from its sitemap and page list).
 const legacyPaths = [
