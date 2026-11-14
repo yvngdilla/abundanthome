@@ -33,7 +33,7 @@ export const products: Record<string, Product> = {
       "Part 1, Write it: six questions and one page that describes the life you are calling in",
       "Part 2, Build it: five steps and a designer's eye for a board that says exactly that",
       "Part 3, Live with it: where to hang it and the two-minute daily habit",
-      "Six printable fill-in pages, from your vision page to an arrivals log",
+      "Five printable fill-in pages, from your vision page to an arrivals log",
     ],
     forYou: [
       "You have made vision boards before and they ended up in a drawer",
