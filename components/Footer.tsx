@@ -31,7 +31,7 @@ export function Footer() {
         </div>
         <p className="fineprint">
           © {new Date().getFullYear()} Abundant Home. Design ideas for your home, not financial, medical or
-          professional advice.
+          professional advice. <Link href="/privacy-policy">Privacy policy</Link>.
         </p>
       </div>
     </footer>

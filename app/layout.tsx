@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { ThirdPartyAnalytics } from "@/components/ThirdPartyAnalytics";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -22,6 +23,9 @@ export const metadata: Metadata = {
   openGraph: { siteName: site.name, type: "website", locale: "en_US" },
   twitter: { card: "summary_large_image" },
   alternates: { canonical: "/" },
+  verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION }
+    : undefined,
 };
 
 export const viewport: Viewport = { themeColor: "#f6f2ea" };
@@ -34,6 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main>{children}</main>
         <Footer />
         <Analytics />
+        <ThirdPartyAnalytics />
       </body>
     </html>
   );

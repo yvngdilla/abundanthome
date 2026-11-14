@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { track } from "@vercel/analytics";
+import { track } from "@/lib/track";
 
 type Props = {
   list: "declutter-challenge" | "vision-board";

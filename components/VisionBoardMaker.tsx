@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { track } from "@vercel/analytics";
+import { track } from "@/lib/track";
 
 type Kind = "image" | "word";
 type CellDef = { x: number; y: number; w: number; h: number; label: string; kind: Kind };
