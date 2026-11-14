@@ -7,7 +7,7 @@ alter table public.subscribers add column if not exists unsubscribed_at timestam
 create table if not exists public.orders (
   id bigint generated always as identity primary key,
   stripe_session_id text not null unique,
-  email citext,
+  email extensions.citext,
   product text not null,
   amount_cents integer,
   currency text,
@@ -19,7 +19,7 @@ create index if not exists orders_email_idx on public.orders (email);
 -- One row per email per person. resend_id is null when an overdue email was skipped instead of sent.
 create table if not exists public.email_sends (
   id bigint generated always as identity primary key,
-  email citext not null,
+  email extensions.citext not null,
   email_key text not null,
   list text,
   resend_id text,

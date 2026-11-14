@@ -50,6 +50,16 @@ export function Article({ meta, eyebrow, heading, lede, accent = "wood", toc, up
         </div>
       </header>
       <div className="wrap">
+        {toc && (
+          <details className="toc-mobile no-print">
+            <summary>On this page</summary>
+            <ol>
+              {toc.map((t) => (
+                <li key={t.id}><a href={`#${t.id}`}>{t.label}</a></li>
+              ))}
+            </ol>
+          </details>
+        )}
         <div className={toc ? "article-grid" : undefined}>
           <div className="prose">
             {children}
