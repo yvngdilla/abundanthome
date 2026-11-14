@@ -90,7 +90,7 @@ export default function Page() {
       lede="This is the method I teach clients. The difference from most guides is step two: you write your vision before you choose a single picture, so the board says one clear thing."
       accent="wood"
       toc={steps.map((s, i) => ({ id: s.id, label: `${i + 1}. ${s.name}` }))}
-      updated="2026-11-13"
+      updated={meta.updated}
       howTo={{ name: "How to make a vision board", steps: steps.map(({ name, text }) => ({ name, text })) }}
     >
       <JsonLd

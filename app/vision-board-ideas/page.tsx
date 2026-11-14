@@ -30,7 +30,7 @@ export default function Page() {
       lede="Most vision boards end up behind a door or in a drawer. These ideas help you decide what goes on yours, what form it takes and where it lives, so it becomes something you actually look at every day."
       accent="wood"
       toc={toc}
-      updated="2026-11-13"
+      updated={meta.updated}
     >
       <p>
         I have been an interior designer in Los Angeles for more than twenty years, and I usually have two or three

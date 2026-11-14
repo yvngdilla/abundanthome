@@ -84,7 +84,7 @@ export default function Page() {
       lede="Your bedroom is the first room you see every morning and the last at night. Its colors set the tone for both. Here is how a designer chooses them, starting with how you want to feel."
       accent="earth"
       toc={toc}
-      updated="2026-11-13"
+      updated={meta.updated}
     >
       <p>
         In more than twenty years of choosing colors for clients, I have found that most people want more of four
