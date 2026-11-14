@@ -165,7 +165,8 @@ export function render(opts: RenderOptions): { html: string; text: string } {
   const a = ACCENTS[d.accent ?? "wood"];
   const title = d.title ?? opts.subject;
   const host = site.url.replace(/^https?:\/\//, "");
-  const address = process.env.MAILING_ADDRESS || "[MAILING ADDRESS]";
+  // No postal address in the footer unless MAILING_ADDRESS is set in Vercel.
+  const address = (process.env.MAILING_ADDRESS || "").trim();
   const reason = opts.reason ?? `You are getting this because you signed up at ${host}.`;
   const footLink = (label: string, url: string) => `<a href="${url}" style="color:${C.muted};text-decoration:underline">${label}</a>`;
   const manage = opts.unsubscribeUrl
@@ -220,7 +221,7 @@ ${body(opts.body, d, a.bg)}
 <p style="margin:0 0 12px;font-family:${SERIF};font-style:italic;font-size:17px;line-height:1.3;color:${C.water}">${esc(site.tagline)}</p>
 <p style="margin:0 0 12px">${footLink("Website", site.url)} &nbsp;·&nbsp; ${footLink("Instagram", site.instagram)} &nbsp;·&nbsp; ${footLink("Pinterest", site.pinterest)}</p>
 <p style="margin:0">${esc(reason)}</p>
-<p style="margin:4px 0 0">Abundant Home · ${esc(address)}</p>
+${address ? `<p style="margin:4px 0 0">Abundant Home · ${esc(address)}</p>` : ""}
 ${manage}
 </td></tr>
 
@@ -237,7 +238,7 @@ ${manage}
     "--",
     `"${site.mantra}"`,
     reason,
-    "Abundant Home · " + address,
+    address ? "Abundant Home · " + address : "Abundant Home",
     opts.unsubscribeUrl ? "Unsubscribe: " + opts.unsubscribeUrl : "",
   ]
     .filter((l, i) => i !== 0 || l)
