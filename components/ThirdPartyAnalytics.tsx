@@ -3,6 +3,7 @@ import Script from "next/script";
 // Measurement IDs are public (they appear in every page). Env vars override the defaults.
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-NH9M4L34S6"; // GA4 property "abundanthomedesign.com" (nancy@abundanthomedesign.com)
 const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID ?? "zda5vmb91d"; // Clarity project "Abundant Home" (nancy@abundanthomedesign.com)
+const AHREFS_KEY = process.env.NEXT_PUBLIC_AHREFS_KEY ?? "mxV/qAyjZ0LEq+RPuOzbgw"; // Ahrefs Web Analytics project "Abundanthomedesign"
 // Only load tracking on the production site, so previews and local runs do not pollute the data.
 const enabled = process.env.VERCEL_ENV === "production";
 
@@ -22,6 +23,9 @@ export function ThirdPartyAnalytics() {
         <Script id="clarity" strategy="afterInteractive">
           {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${CLARITY_ID}");`}
         </Script>
+      )}
+      {AHREFS_KEY && /^[A-Za-z0-9+/=]+$/.test(AHREFS_KEY) && (
+        <Script src="https://analytics.ahrefs.com/analytics.js" data-key={AHREFS_KEY} strategy="afterInteractive" />
       )}
     </>
   );
