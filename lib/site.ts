@@ -13,6 +13,7 @@ export const site = {
   pinterest: "https://www.pinterest.com/abundant_home/",
   // The January reset challenge start date. Change here to move it everywhere.
   challengeStart: "Monday, January 4",
+  challengeStartISO: "2027-01-04",
 };
 
 export type PageMeta = {

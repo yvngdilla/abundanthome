@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { EmailSignup } from "@/components/EmailSignup";
 import { JsonLd } from "@/components/JsonLd";
+import { WorkbookCTA } from "@/components/WorkbookCTA";
 import { VisionBoardMaker } from "@/components/VisionBoardMaker";
 import { pages, site } from "@/lib/site";
 
@@ -90,6 +91,8 @@ export default function Page() {
             <li><Link href={pages.ideas.path}>40 vision board ideas from an interior designer</Link></li>
             <li><Link href={pages.howTo.path}>How to make a vision board in 9 steps</Link></li>
           </ul>
+
+          <WorkbookCTA path={meta.path} />
         </div>
       </div>
     </div>

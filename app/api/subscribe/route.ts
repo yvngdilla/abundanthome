@@ -1,5 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
+import { emails, welcomeKey, type ListName } from "@/lib/email/content";
+import { deliver } from "@/lib/email/deliver";
 
 const LISTS = new Set(["declutter-challenge", "vision-board"]);
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -32,7 +34,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Sign-ups are not open yet. Please try again soon." }, { status: 503 });
   }
 
-  const { error } = await db.from("subscribers").upsert(
+  const { data, error } = await db.from("subscribers").upsert(
     {
       email,
       list,
@@ -43,11 +45,24 @@ export async function POST(req: Request) {
       utm_campaign: clip(body.utm_campaign, 100),
     },
     { onConflict: "email,list", ignoreDuplicates: true },
-  );
+  ).select("id");
 
   if (error) {
     console.error("subscribe: insert failed", error.message);
     return NextResponse.json({ error: "Something went wrong. Please try again." }, { status: 500 });
+  }
+
+  // New on this list: send the welcome email after the response, so the form never waits on it.
+  // (A repeat sign-up returns no row and gets nothing.)
+  if (data?.length) {
+    const welcome = emails[welcomeKey(list as ListName, new Date())];
+    after(async () => {
+      const r = await deliver(email, welcome, { list, marketing: true });
+      if (r.error) console.error("subscribe: welcome email failed", r.error);
+    });
+  } else {
+    // Someone who unsubscribed and signs up again is back on the list.
+    await db.from("subscribers").update({ unsubscribed_at: null }).eq("email", email).eq("list", list).not("unsubscribed_at", "is", null);
   }
   return NextResponse.json({ ok: true });
 }

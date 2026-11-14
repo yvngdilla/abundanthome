@@ -357,3 +357,14 @@ table.simple th { font-weight: 600; }
   .vbm-panel { position: static; }
 }
 .accent-earth li::marker { color: var(--water); }
+
+/* Shop */
+.price { font-family: var(--font-serif), serif; font-size: 2rem; margin: var(--space-6) 0 var(--space-2); color: var(--water); }
+.buy .btn { min-width: 260px; }
+.buy-note { font-size: 0.9rem; color: var(--ink-muted); margin: var(--space-3) 0 0; }
+.buy-again { margin: var(--space-12) 0; padding-top: var(--space-8); border-top: 1px solid var(--metal); }
+.split-top { align-items: start; }
+.downloads { list-style: none; padding: 0; display: grid; gap: var(--space-3); margin: var(--space-6) 0; }
+.downloads .btn { width: 100%; justify-content: flex-start; }
+.workbook-cta { background: var(--white); border: 1px solid var(--metal); border-top: 3px solid var(--accent); padding: var(--space-8); margin: var(--space-12) 0; border-radius: var(--radius-sm); }
+.workbook-cta h2 { margin-top: 0; }

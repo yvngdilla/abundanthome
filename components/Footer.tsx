@@ -26,6 +26,8 @@ export function Footer() {
             <ul>
               <li><Link href={pages.bedroomColors.path}>Bedroom colors</Link></li>
               <li><Link href={pages.challenge.path}>5-day declutter challenge</Link></li>
+              <li><Link href="/workbooks">Workbooks</Link></li>
+              <li><Link href="/room-review">Virtual room review</Link></li>
             </ul>
           </div>
           <div>

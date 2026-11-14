@@ -64,6 +64,8 @@ const legacyPaths = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Workbook PDFs are read from disk by the download route only; they are never in public/.
+  outputFileTracingIncludes: { "/api/download": ["./content/guide/pdfs/**/*.pdf"] },
   async redirects() {
     if (!LEGACY) return [];
     // Temporary (307) redirects: these pages may move into the new site later.

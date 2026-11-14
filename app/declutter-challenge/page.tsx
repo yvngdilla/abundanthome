@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { EmailSignup } from "@/components/EmailSignup";
 import { JsonLd } from "@/components/JsonLd";
+import { WorkbookCTA } from "@/components/WorkbookCTA";
 import { pages, site } from "@/lib/site";
 
 const meta = pages.challenge;
@@ -112,6 +113,8 @@ export default function Page() {
               <p>{f.a}</p>
             </div>
           ))}
+
+          <WorkbookCTA path={meta.path} />
 
           <h2>While you wait</h2>
           <ul>
