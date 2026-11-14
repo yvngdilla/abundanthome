@@ -98,7 +98,7 @@ Hi,
 
 Over the last ten days I have shared the short version of how I make a vision board. The long version lives in my Vision Board Workbook, the same one my Guide students use.
 
-It walks you through writing your Newlife Script, then choosing, arranging and placing a board that says exactly what you want, with prompts and checklists all the way.
+It walks you through writing one page about the life you are calling in, then building a board that says exactly that and hanging it where it works on you every day. One afternoon, with fill-in pages all the way.
 
 ${vb.includes.map((i) => "- " + i).join("\n")}
 

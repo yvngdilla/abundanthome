@@ -23,26 +23,24 @@ export const products: Record<string, Product> = {
     slug: "vision-board-workbook",
     kind: "workbook",
     name: "The Vision Board Workbook",
-    short: "Write your new-life script, then turn it into a board that works.",
+    short: "Write what you want, build a board that says it, and hang it where it works.",
     price: 1900,
     key: "Key 2 of The Guide to Living in Abundance",
     accent: "wood",
     intro:
-      "Most vision boards fail for one reason: they start with pictures. Nancy's method starts with words. You write the life you want as if you already live it, then build a board that says exactly that, and put it where it works on you every day.",
+      "Most vision boards fail for one reason: they start with pictures. Nancy's method starts with words. In one afternoon you write the life you want as if you already live it, build a board that says exactly that, and put it where it works on you every day.",
     includes: [
-      "The Newlife Script workbook: write your vision before you choose a single image",
-      "The Newlife Vision Board workbook: choose, arrange and place your board with a designer's eye",
-      "Prompts, examples and checklists you can fill in on screen or print",
+      "Part 1, Write it: six questions and one page that describes the life you are calling in",
+      "Part 2, Build it: five steps and a designer's eye for a board that says exactly that",
+      "Part 3, Live with it: where to hang it and the two-minute daily habit",
+      "Six printable fill-in pages, from your vision page to an arrivals log",
     ],
     forYou: [
       "You have made vision boards before and they ended up in a drawer",
       "You want your board to look beautiful enough to keep on the wall",
       "You are starting a new year, a new home or a new chapter",
     ],
-    files: [
-      { file: "K2-E1.pdf", label: "Newlife Script workbook" },
-      { file: "KE-E2-AH.pdf", label: "Newlife Vision Board workbook" },
-    ],
+    files: [{ file: "Vision-Board-Workbook-AH.pdf", label: "The Vision Board Workbook" }],
     related: ["/vision-board-ideas", "/how-to-make-a-vision-board", "/vision-board-template"],
   },
   "define-your-style-workbook": {
