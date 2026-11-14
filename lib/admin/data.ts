@@ -182,8 +182,16 @@ async function load(db: SupabaseClient, now: Date): Promise<{ rows: Rows; missin
   if (views.missing) missing.push("page_views");
   const orders = await fetchAll<Rows["orders"][number]>(db, "orders", "product,amount_cents,created_at");
   if (orders.missing) missing.push("orders");
-  const downloads = await fetchAll<Rows["downloads"][number]>(db, "downloads", "kind,item,created_at");
+  let downloads = await fetchAll<Rows["downloads"][number] & { visitor_id?: string | null }>(db, "downloads", "kind,item,visitor_id,created_at");
   if (downloads.missing) missing.push("downloads");
+
+  // Leave out browsers that have opened the admin (Nancy's and Colston's own visits).
+  const { data: staffRows } = await db.from("staff_visitors").select("id");
+  const staff = new Set((staffRows ?? []).map((r: { id: string }) => r.id));
+  if (staff.size) {
+    views.rows = views.rows.filter((v) => !staff.has(v.visitor_id));
+    downloads = { ...downloads, rows: downloads.rows.filter((d) => !d.visitor_id || !staff.has(d.visitor_id)) };
+  }
 
   // First-seen dates for the visitors in the window, in batches.
   const ids = [...new Set(views.rows.map((v) => v.visitor_id))];

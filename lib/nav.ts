@@ -24,10 +24,10 @@ export const nav: NavGroup[] = [
     ],
   },
   {
-    label: "Shop",
+    label: "Workbooks",
     href: "/workbooks",
     items: [
-      ...workbooks.map((w) => ({ label: w.name.replace(/^The /, ""), href: `/workbooks/${w.slug}`, note: "Printable workbook" })),
+      ...workbooks.map((w) => ({ label: w.name.replace(/^The /, ""), href: `/workbooks/${w.slug}` })),
       { label: "Virtual room review", href: "/room-review", note: "A written plan for one room, from Nancy" },
       { label: "See all workbooks", href: "/workbooks" },
     ],

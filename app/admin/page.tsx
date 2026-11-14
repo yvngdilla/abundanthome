@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/admin/auth";
 import { getDashboard } from "@/lib/admin/data";
 import { BarList, Stat, StackedColumns } from "@/components/admin/charts";
+import { MarkStaff } from "@/components/admin/MarkStaff";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Admin", robots: { index: false, follow: false } };
@@ -21,6 +22,7 @@ export default async function AdminPage() {
   return (
     <div className="adm">
       <div className="wrap">
+        <MarkStaff />
         <header className="adm-head">
           <div>
             <p className="eyebrow">Abundant Home</p>
@@ -58,7 +60,7 @@ export default async function AdminPage() {
 
           <section className="adm-panel">
             <h2>Daily active visitors</h2>
-            <p className="adm-sub">Distinct visitors per day, admin excluded</p>
+            <p className="adm-sub">Distinct visitors per day, your own visits excluded</p>
             <div className="adm-stats">
               <Stat label="Active today" value={d.active.today.toLocaleString()} note="so far this PT day" />
               <Stat label="Weekly active" value={d.active.wau.toLocaleString()} delta={d.active.wau - d.active.wauPrev} note="last 7 days" />

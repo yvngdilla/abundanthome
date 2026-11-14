@@ -14,7 +14,17 @@ export function visitorId(): string | null {
   }
 }
 
+// True in a browser that has opened the admin: Nancy's and Colston's own visits are not counted.
+export function isStaff(): boolean {
+  try {
+    return localStorage.getItem("ah_staff") === "1";
+  } catch {
+    return false;
+  }
+}
+
 export function send(body: Record<string, unknown>) {
+  if (isStaff()) return;
   const v = visitorId();
   if (!v) return;
   const data = JSON.stringify({ ...body, v });
