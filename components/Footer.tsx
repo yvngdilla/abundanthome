@@ -26,8 +26,9 @@ export function Footer() {
             </div>
           ))}
           <div>
-            <h3>Follow</h3>
+            <h3>Connect</h3>
             <ul>
+              <li><Link href="/contact">Contact Nancy</Link></li>
               <li><a href={site.instagram} rel="noopener">Instagram</a></li>
               <li><a href={site.pinterest} rel="noopener">Pinterest</a></li>
             </ul>
@@ -38,7 +39,7 @@ export function Footer() {
             © {new Date().getFullYear()} Abundant Home. Design ideas for your home, not financial, medical or
             professional advice.
           </p>
-          <p><Link href="/privacy-policy">Privacy policy</Link></p>
+          <p><Link href="/contact">Contact</Link> · <Link href="/privacy-policy">Privacy policy</Link></p>
         </div>
       </div>
     </footer>

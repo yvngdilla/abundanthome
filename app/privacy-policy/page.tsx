@@ -36,6 +36,10 @@ export default function Page() {
             Google. We use it to show your workbooks and email settings. You can ask us to delete it anytime.
           </li>
           <li>
+            <strong>Messages you send us</strong> through the contact form: your name, email address and message. They
+            go straight to our inbox by email so we can reply; the website does not store them.
+          </li>
+          <li>
             <strong>Purchases.</strong> When you buy a workbook or room review, Stripe handles payment. We receive your
             email address, what you bought and the amount, never your card details.
           </li>

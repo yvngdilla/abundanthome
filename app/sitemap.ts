@@ -25,6 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     })),
     { url: site.url + "/room-review", lastModified: new Date(SHOP_UPDATED), changeFrequency: "monthly", priority: 0.6 },
+    { url: site.url + "/contact", lastModified: new Date(SHOP_UPDATED), changeFrequency: "yearly", priority: 0.4 },
     { url: site.url + "/privacy-policy", lastModified: new Date("2026-11-13"), changeFrequency: "yearly", priority: 0.2 },
   ];
 }

@@ -37,6 +37,7 @@ function body(): string {
     "## About",
     "",
     `- [Home](${site.url}/): Start here: from writing your vision, to making a board, to making your room match it.`,
+    `- [Contact](${site.url}/contact): Reach Nancy by form or at ${site.contactEmail}.`,
     `- [Privacy policy](${site.url}/privacy-policy): How sign-up emails are stored and used.`,
     "",
     "## Optional",

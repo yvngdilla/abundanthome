@@ -17,6 +17,7 @@ export type Outgoing = {
   text: string;
   unsubscribeUrl?: string | null;
   tag: string; // which email this is, e.g. "vb-1", for Resend's dashboard
+  replyTo?: string; // defaults to REPLY_TO
 };
 
 export type SendResult = { sent: boolean; id?: string; skipped?: string; error?: string };
@@ -38,7 +39,7 @@ export async function sendEmail(m: Outgoing): Promise<SendResult> {
       body: JSON.stringify({
         from: FROM,
         to: [m.to],
-        reply_to: REPLY_TO,
+        reply_to: m.replyTo || REPLY_TO,
         subject: m.subject,
         html: m.html,
         text: m.text,

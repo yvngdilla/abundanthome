@@ -10,6 +10,8 @@ export const site = {
     bio: "Nancy Swanton has spent more than 20 years designing homes, offices and hospitality spaces in Los Angeles. She created The Guide to Living in Abundance to bring a designer's process to people who practice manifestation.",
   },
   mantra: "There is nothing you can't do, be or have.",
+  // Where contact form messages go, and the address shown on the contact page.
+  contactEmail: "connect@abundanthomedesign.com",
   instagram: "https://www.instagram.com/abundant.home/",
   pinterest: "https://www.pinterest.com/abundant_home/",
   // The January reset challenge start date. Change here to move it everywhere.
