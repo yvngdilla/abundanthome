@@ -17,6 +17,7 @@ export type Rows = {
   visitors: { id: string; first_seen: string; first_referrer_host: string | null; first_utm_source: string | null }[];
   orders: { product: string; amount_cents: number | null; created_at: string }[];
   downloads: { kind: string; item: string; created_at: string }[];
+  accounts?: { created_at: string }[];
 };
 
 export type Dashboard = {
@@ -53,6 +54,8 @@ export type Dashboard = {
     byProduct: { slug: string; name: string; orders: number; revenue: number; downloads: number }[];
     templateDownloads30: number;
     templateDownloadsAll: number;
+    accounts: number;
+    accounts30: number;
   };
 };
 
@@ -193,7 +196,15 @@ async function load(db: SupabaseClient, now: Date): Promise<{ rows: Rows; missin
     }
     visitors.push(...((data ?? []) as Rows["visitors"]));
   }
-  return { rows: { subscribers: subs.rows, views: views.rows, visitors, orders: orders.rows, downloads: downloads.rows }, missing };
+  // Accounts (Supabase Auth users), counted by sign-up date.
+  const accounts: { created_at: string }[] = [];
+  for (let page = 1; page <= 50; page++) {
+    const { data, error } = await db.auth.admin.listUsers({ page, perPage: 1000 });
+    if (error) break;
+    accounts.push(...data.users.map((u) => ({ created_at: u.created_at })));
+    if (data.users.length < 1000) break;
+  }
+  return { rows: { subscribers: subs.rows, views: views.rows, visitors, orders: orders.rows, downloads: downloads.rows, accounts }, missing };
 }
 
 export function compute(rows: Rows, now: Date, demo = false, missing: string[] = []): Dashboard {
@@ -304,6 +315,8 @@ export function compute(rows: Rows, now: Date, demo = false, missing: string[] =
       byProduct,
       templateDownloads30: dl.filter((d) => d.kind === "template" && in30(d.day)).length,
       templateDownloadsAll: dl.filter((d) => d.kind === "template").length,
+      accounts: rows.accounts?.length ?? 0,
+      accounts30: (rows.accounts ?? []).filter((a) => in30(pacificDate(a.created_at))).length,
     },
   };
 }

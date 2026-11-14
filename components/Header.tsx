@@ -3,6 +3,7 @@ import { pages } from "@/lib/site";
 import { nav } from "@/lib/nav";
 import { MobileMenu } from "@/components/MobileMenu";
 import { HeaderScroll } from "@/components/HeaderScroll";
+import { AccountLink } from "@/components/AccountLink";
 
 export function Header() {
   return (
@@ -34,6 +35,7 @@ export function Header() {
               </div>
             </div>
           ))}
+          <AccountLink className="nav-account" />
           <Link className="btn nav-cta" href={pages.template.path}>Free vision board template</Link>
         </nav>
         <MobileMenu />

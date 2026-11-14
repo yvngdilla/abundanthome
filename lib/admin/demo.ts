@@ -64,6 +64,7 @@ export function demoRows(now: Date): Rows {
       }
     }
   }
+  rows.accounts = rows.orders.map((o) => ({ created_at: o.created_at })).concat(rows.subscribers.filter(() => r() < 0.2).map((x) => ({ created_at: x.created_at })));
   rows.visitors = pool.map((p) => ({ id: p.id, first_seen: new Date(p.first).toISOString(), first_referrer_host: p.ref[0], first_utm_source: p.ref[1] }));
   return rows;
 }

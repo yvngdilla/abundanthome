@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { nav } from "@/lib/nav";
+import { AccountLink } from "@/components/AccountLink";
 
 // The phone menu: every page on the site, grouped the same way as the desktop menus.
 export function MobileMenu() {
@@ -30,6 +31,7 @@ export function MobileMenu() {
             </ul>
           </div>
         ))}
+        <div className="mobile-group mobile-account"><AccountLink /></div>
       </div>
     </details>
   );

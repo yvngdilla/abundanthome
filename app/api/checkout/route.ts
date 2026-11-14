@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { site } from "@/lib/site";
 import { products } from "@/lib/shop";
 import { createCheckout, stripeReady } from "@/lib/stripe";
+import { currentUser } from "@/lib/auth/server";
 
 // Starts a Stripe Checkout for one product and returns the hosted checkout URL.
 export async function POST(req: Request) {
@@ -16,6 +17,7 @@ export async function POST(req: Request) {
   if (!stripeReady()) {
     return NextResponse.json({ error: "Checkout opens soon. Please check back in a few days." }, { status: 503 });
   }
+  const user = await currentUser().catch(() => null);
   const back = product.kind === "service" ? "/room-review" : `/workbooks/${product.slug}`;
   try {
     const session = await createCheckout({
@@ -25,6 +27,7 @@ export async function POST(req: Request) {
       amount: product.price,
       successUrl: `${site.url}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
       cancelUrl: `${site.url}${back}`,
+      email: user?.email ?? undefined, // signed in: the order lands in their account automatically
     });
     if (!session.url) throw new Error("no checkout url");
     return NextResponse.json({ url: session.url });

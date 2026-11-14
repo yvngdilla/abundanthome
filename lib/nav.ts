@@ -1,5 +1,5 @@
 import { pages } from "@/lib/site";
-import { formatPrice, products, workbooks } from "@/lib/shop";
+import { workbooks } from "@/lib/shop";
 
 // The site map in one place: the header menus, the mobile menu and the footer all read from this.
 export type NavLink = { label: string; href: string; note?: string };
@@ -27,8 +27,8 @@ export const nav: NavGroup[] = [
     label: "Shop",
     href: "/workbooks",
     items: [
-      ...workbooks.map((w) => ({ label: w.name.replace(/^The /, ""), href: `/workbooks/${w.slug}`, note: `${formatPrice(w.price)} · printable workbook` })),
-      { label: "Virtual room review", href: "/room-review", note: `${formatPrice(products["room-review"].price)} · a written plan for one room` },
+      ...workbooks.map((w) => ({ label: w.name.replace(/^The /, ""), href: `/workbooks/${w.slug}`, note: "Printable workbook" })),
+      { label: "Virtual room review", href: "/room-review", note: "A written plan for one room, from Nancy" },
       { label: "See all workbooks", href: "/workbooks" },
     ],
   },

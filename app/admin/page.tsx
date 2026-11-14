@@ -89,10 +89,11 @@ export default async function AdminPage() {
         <section className="adm-panel">
           <h2>Workbooks and the room review</h2>
           <p className="adm-sub">Orders, revenue and downloads</p>
-          <div className="adm-stats">
+          <div className="adm-stats" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))" }}>
             <Stat label="Orders" value={d.shop.orders30.toLocaleString()} note={`last 30 days · ${d.shop.ordersAll} all time`} />
             <Stat label="Revenue" value={money(d.shop.revenue30)} note={`last 30 days · ${money(d.shop.revenueAll)} all time`} tone="wood" />
             <Stat label="Free template downloads" value={d.shop.templateDownloads30.toLocaleString()} note={`last 30 days · ${d.shop.templateDownloadsAll} all time`} />
+            <Stat label="Accounts" value={d.shop.accounts.toLocaleString()} note={`+${d.shop.accounts30} in 30 days`} />
             <Stat label="Sign-up to order" value={d.signups.last30 ? pct(d.shop.orders30 / d.signups.last30) : "–"} note="orders ÷ new sign-ups" />
           </div>
           <table className="adm-table">

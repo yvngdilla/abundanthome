@@ -4,6 +4,7 @@ import { getCheckout, stripeReady } from "@/lib/stripe";
 import { fulfil } from "@/lib/orders";
 import { pages, site } from "@/lib/site";
 import { PurchaseEvent } from "@/components/PurchaseEvent";
+import { currentUser } from "@/lib/auth/server";
 
 export const dynamic = "force-dynamic";
 
@@ -42,6 +43,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ s
   }
 
   const { product, email, links } = result;
+  const user = await currentUser().catch(() => null);
   return (
     <div className={`accent-${product.accent}`}>
       <PurchaseEvent id={id!} product={product.slug} value={value} />
@@ -68,6 +70,15 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ s
                 ))}
               </ul>
             </>
+          )}
+          {product.kind !== "service" && (
+            <div className="note-box">
+              {user ? (
+                <p>{user.email?.toLowerCase() === email?.toLowerCase() ? <>This workbook is saved in <Link href="/account">your account</Link>.</> : <>You are signed in as {user.email}. To see this workbook in your account, sign in with {email}.</>}</p>
+              ) : (
+                <p><Link href={`/account/sign-in?next=/account`}>Sign in{email ? ` with ${email}` : ""}</Link> to keep your workbooks in one place and download them again anytime. No password needed.</p>
+              )}
+            </div>
           )}
           <h2>While you are here</h2>
           <ul>

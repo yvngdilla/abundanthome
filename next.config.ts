@@ -58,8 +58,8 @@ const legacyPaths = [
   "/checkout",
   "/checkout/:path*",
   "/commerce/:path*",
-  "/account",
-  "/account/:path*",
+  // "/account" is no longer sent to Squarespace: it is the new Abundant Home account. Guide members
+  // sign in on the members site; the sign-in page links there.
 ];
 
 const nextConfig: NextConfig = {
