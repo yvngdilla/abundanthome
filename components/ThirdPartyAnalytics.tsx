@@ -25,7 +25,8 @@ export function ThirdPartyAnalytics() {
         </Script>
       )}
       {AHREFS_KEY && /^[A-Za-z0-9+/=]+$/.test(AHREFS_KEY) && (
-        <Script src="https://analytics.ahrefs.com/analytics.js" data-key={AHREFS_KEY} strategy="afterInteractive" />
+        // A plain async tag (React hoists it into <head>) so Ahrefs' installation check finds it in the HTML.
+        <script src="https://analytics.ahrefs.com/analytics.js" data-key={AHREFS_KEY} async />
       )}
     </>
   );
