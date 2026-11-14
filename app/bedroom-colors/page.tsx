@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Article } from "@/components/Article";
 import { EmailSignup } from "@/components/EmailSignup";
+import { WorkbookCTA } from "@/components/WorkbookCTA";
 import { pages, site } from "@/lib/site";
 
 const meta = pages.bedroomColors;
@@ -198,6 +199,8 @@ export default function Page() {
         If you want two different things, give each its own place. A client who wanted both prosperity and love put
         her greens in her office and her pinks in the bedroom, so each room had one clear message.
       </p>
+
+      <WorkbookCTA path={meta.path} eyebrow="The workbook" />
 
       <h2 id="finish">Choose the finish first</h2>
       <p>The finish changes how a color reads, so settle it before you choose the shade.</p>

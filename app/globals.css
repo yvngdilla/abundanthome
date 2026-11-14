@@ -213,7 +213,7 @@ a.step:hover { border-color: var(--water); }
 .byline { font-size: 0.9rem; color: var(--ink-muted); margin-top: var(--space-4); }
 .article-grid { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: var(--space-12); align-items: start; }
 .toc { position: sticky; top: var(--space-6); font-size: 0.9rem; border-left: 2px solid var(--accent); padding-left: var(--space-4); }
-.toc ol { padding-left: 1.1em; }
+.toc ol { list-style: none; padding-left: 0; }
 .toc a { color: var(--water); text-decoration: none; }
 .toc a:hover { color: var(--fire); }
 

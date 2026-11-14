@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Article } from "@/components/Article";
 import { EmailSignup } from "@/components/EmailSignup";
+import { WorkbookCTA } from "@/components/WorkbookCTA";
 import { pages, site } from "@/lib/site";
 
 const meta = pages.ideas;
@@ -205,6 +206,8 @@ export default function Page() {
           not doing its job.
         </li>
       </ol>
+
+      <WorkbookCTA path={meta.path} eyebrow="The workbook" />
 
       <h2 id="design">Vision board ideas from a designer</h2>
       <p>

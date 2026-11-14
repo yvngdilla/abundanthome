@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Article } from "@/components/Article";
 import { EmailSignup } from "@/components/EmailSignup";
+import { WorkbookCTA } from "@/components/WorkbookCTA";
 import { JsonLd } from "@/components/JsonLd";
 import { pages, site } from "@/lib/site";
 
@@ -196,6 +197,8 @@ export default function Page() {
         It does not have to be tidy. My first materials board in design school was twice the size of everyone
         else&apos;s, with sticks and feathers coming off every edge. Follow your own taste.
       </p>
+
+      <WorkbookCTA path={meta.path} eyebrow="The workbook" />
 
       <h2 id="display">8. Put it where you will see it every day</h2>
       <p>
