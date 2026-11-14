@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ThirdPartyAnalytics } from "@/components/ThirdPartyAnalytics";
+import { SignupModal } from "@/components/SignupModal";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main>{children}</main>
         <Footer />
+        <SignupModal />
         <Analytics />
         <ThirdPartyAnalytics />
       </body>
