@@ -23,7 +23,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ e
         )}
         {accounts && (
           <p style={{ marginTop: 24 }}>
-            <a href="/account/sign-in?next=/admin">Sign in with your Abundant Home account</a> (Google, Apple or email).
+            <a href="/account/sign-in?next=/admin">Sign in with your Abundant Home account</a> (Google or email).
           </p>
         )}
       </div>

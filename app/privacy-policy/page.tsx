@@ -33,7 +33,7 @@ export default function Page() {
           </li>
           <li>
             <strong>Your account</strong>, if you create one: your email address, and your name if you sign in with
-            Google or Apple. We use it to show your workbooks and email settings. You can ask us to delete it anytime.
+            Google. We use it to show your workbooks and email settings. You can ask us to delete it anytime.
           </li>
           <li>
             <strong>Purchases.</strong> When you buy a workbook or room review, Stripe handles payment. We receive your
