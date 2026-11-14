@@ -1,6 +1,7 @@
 import Script from "next/script";
 
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+// Measurement IDs are public (they appear in every page). Env vars override the defaults.
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-NH9M4L34S6"; // GA4 property "abundanthomedesign.com" (nancy@abundanthomedesign.com)
 const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID;
 // Only load tracking on the production site, so previews and local runs do not pollute the data.
 const enabled = process.env.VERCEL_ENV === "production";
