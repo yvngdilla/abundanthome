@@ -60,7 +60,7 @@ export default function Home() {
         <div className="wrap hero-grid">
           <div>
             <p className="eyebrow">{site.tagline}</p>
-            <h1>Your home is the missing step in manifesting</h1>
+            <h1>Your home is the key to manifesting more</h1>
             <p className="lede" style={{ marginTop: 20 }}>
               You journal. You script. You made the vision board. Then you walk back into a room that tells the old
               story. Interior designer {site.author.name} shows you how to make your home part of what you are calling
