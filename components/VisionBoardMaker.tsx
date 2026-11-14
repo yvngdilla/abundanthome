@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { track } from "@/lib/track";
+import { send } from "@/lib/visitor-client";
 import { EmailGate, hasUnlocked } from "@/components/EmailGate";
 
 type Kind = "image" | "word";
@@ -217,6 +218,7 @@ export function VisionBoardMaker() {
       setTimeout(() => URL.revokeObjectURL(url), 5000);
       const filled = def.cells.filter((_, i) => content[key(i)]?.src || content[key(i)]?.text).length;
       track("board_download", { size: sizeId, layout: layoutId, filled });
+      send({ type: "download", item: "vision-board-template" });
     } finally {
       setBusy(false);
     }

@@ -10,7 +10,7 @@ export default function Page() {
   return (
     <div className="wrap">
       <div className="prose" style={{ padding: "48px 0" }}>
-        <p className="eyebrow">Last updated November 13, 2026</p>
+        <p className="eyebrow">Last updated November 14, 2026</p>
         <h1>Privacy policy</h1>
         <p style={{ marginTop: 24 }}>
           This policy explains what information Abundant Home (abundanthomedesign.com) collects when you use this website,
@@ -26,7 +26,14 @@ export default function Page() {
           <li>
             <strong>Usage information</strong>, such as the pages you visit, how you move around a page, your device and
             browser type, and your approximate location. We collect this with Google Analytics, Microsoft Clarity and
-            Vercel Web Analytics, which may use cookies or similar technology.
+            Vercel Web Analytics, which may use cookies or similar technology. We also keep our own simple count of
+            page visits and downloads, tied to a random ID stored in your browser (not your name, email or IP address),
+            with your approximate country, region and device type. If your browser sends Do Not Track or Global
+            Privacy Control, we skip it.
+          </li>
+          <li>
+            <strong>Purchases.</strong> When you buy a workbook or room review, Stripe handles payment. We receive your
+            email address, what you bought and the amount, never your card details.
           </li>
           <li>
             <strong>Not your photos.</strong> Images you add to the vision board template stay in your browser. They are

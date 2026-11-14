@@ -2,6 +2,7 @@
 
 import { useId, useState } from "react";
 import { track } from "@/lib/track";
+import { firstTouch, visitorId } from "@/lib/visitor-client";
 
 type Props = {
   list: "declutter-challenge" | "vision-board";
@@ -44,6 +45,7 @@ export function EmailSignup({
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const params = new URLSearchParams(window.location.search);
+    const ft = firstTouch();
     setState("sending");
     try {
       const res = await fetch("/api/subscribe", {
@@ -54,10 +56,12 @@ export function EmailSignup({
           company: form.get("company"),
           list,
           path: window.location.pathname,
-          referrer: document.referrer || null,
-          utm_source: params.get("utm_source"),
-          utm_medium: params.get("utm_medium"),
-          utm_campaign: params.get("utm_campaign"),
+          referrer: ft?.ref ?? (document.referrer || null),
+          utm_source: params.get("utm_source") ?? ft?.utm_source ?? null,
+          utm_medium: params.get("utm_medium") ?? ft?.utm_medium ?? null,
+          utm_campaign: params.get("utm_campaign") ?? ft?.utm_campaign ?? null,
+          landing: ft?.landing ?? null,
+          v: visitorId(),
         }),
       });
       const data = await res.json().catch(() => ({}));

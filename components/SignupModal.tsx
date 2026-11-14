@@ -68,7 +68,7 @@ export function SignupModal() {
 
   useEffect(() => {
     shown.current = false;
-    if (NEVER.has(path) || shouldSkip()) return;
+    if (NEVER.has(path) || path.startsWith("/admin") || shouldSkip()) return;
     const exitOnly = EXIT_ONLY.has(path);
 
     const open = (trigger: string) => {

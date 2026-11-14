@@ -1,6 +1,7 @@
 import { NextResponse, after } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { emails, welcomeKey, type ListName } from "@/lib/email/content";
+import { device, geo } from "@/lib/visitor";
 import { deliver } from "@/lib/email/deliver";
 
 const LISTS = new Set(["declutter-challenge", "vision-board"]);
@@ -34,18 +35,20 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Sign-ups are not open yet. Please try again soon." }, { status: 503 });
   }
 
-  const { data, error } = await db.from("subscribers").upsert(
-    {
-      email,
-      list,
-      source_path: clip(body.path, 300),
-      referrer: clip(body.referrer, 500),
-      utm_source: clip(body.utm_source, 100),
-      utm_medium: clip(body.utm_medium, 100),
-      utm_campaign: clip(body.utm_campaign, 100),
-    },
-    { onConflict: "email,list", ignoreDuplicates: true },
-  ).select("id");
+  const base = {
+    email,
+    list,
+    source_path: clip(body.path, 300),
+    referrer: clip(body.referrer, 500),
+    utm_source: clip(body.utm_source, 100),
+    utm_medium: clip(body.utm_medium, 100),
+    utm_campaign: clip(body.utm_campaign, 100),
+  };
+  // Analytics columns come from a later migration; until it is applied, save the sign-up without them.
+  const extra = { ...geo(req), device: device(req), visitor_id: clip(body.v, 64), landing_path: clip(body.landing, 300) };
+  const save = (row: object) => db.from("subscribers").upsert(row, { onConflict: "email,list", ignoreDuplicates: true }).select("id");
+  let { data, error } = await save({ ...base, ...extra });
+  if (error && /column/i.test(error.message)) ({ data, error } = await save(base));
 
   if (error) {
     console.error("subscribe: insert failed", error.message);

@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+import { PageView } from "@/components/PageView";
 import type { Metadata, Viewport } from "next";
 import { DM_Serif_Display, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
@@ -39,6 +41,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main>{children}</main>
         <Footer />
         <SignupModal />
+        <Suspense fallback={null}>
+          <PageView />
+        </Suspense>
         <Analytics />
         <ThirdPartyAnalytics />
       </body>
