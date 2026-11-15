@@ -13,7 +13,7 @@ export type Count = { label: string; count: number; note?: string };
 
 export type Rows = {
   subscribers: { email: string; list: string; source_path: string | null; landing_path?: string | null; referrer: string | null; utm_source: string | null; country?: string | null; region?: string | null; device?: string | null; created_at: string; unsubscribed_at?: string | null }[];
-  views: { visitor_id: string; path: string; referrer_host: string | null; utm_source: string | null; country: string | null; region: string | null; device: string | null; created_at: string }[];
+  views: { visitor_id: string; path: string; referrer_host: string | null; utm_source: string | null; country: string | null; region: string | null; device: string | null; created_at: string; engaged?: boolean | null; automated?: boolean | null }[];
   visitors: { id: string; first_seen: string; first_referrer_host: string | null; first_utm_source: string | null }[];
   orders: { email?: string | null; product: string; amount_cents: number | null; created_at: string }[];
   downloads: { kind: string; item: string; created_at: string }[];
@@ -56,6 +56,7 @@ export type Dashboard = {
     mauPrev: number;
     stickiness: number;
     views30: number;
+    bots30: number; // browsers in the last 30 days with no confirmed (engaged) visit, left out of every count
   };
   audience: { countries: Count[]; regions: Count[]; devices: Count[]; pages: Count[]; channels: Count[] };
   shop: {
@@ -190,7 +191,8 @@ async function load(db: SupabaseClient, now: Date): Promise<{ rows: Rows; missin
     if (subs.missing) missing.push("subscribers");
     else missing.push("subscriber details (country, device, unsubscribes)");
   }
-  const views = await fetchAll<Rows["views"][number]>(db, "page_views", "visitor_id,path,referrer_host,utm_source,country,region,device,created_at", since);
+  let views = await fetchAll<Rows["views"][number]>(db, "page_views", "visitor_id,path,referrer_host,utm_source,country,region,device,created_at,engaged,automated", since);
+  if (views.missing) views = await fetchAll<Rows["views"][number]>(db, "page_views", "visitor_id,path,referrer_host,utm_source,country,region,device,created_at", since);
   if (views.missing) missing.push("page_views");
   const orders = await fetchAll<Rows["orders"][number]>(db, "orders", "email,product,amount_cents,created_at");
   if (orders.missing) missing.push("orders");
@@ -226,6 +228,10 @@ async function load(db: SupabaseClient, now: Date): Promise<{ rows: Rows; missin
   }
   return { rows: { subscribers: subs.rows, views: views.rows, visitors, orders: orders.rows, downloads: downloads.rows, accounts }, missing };
 }
+
+// A page load counts once the browser confirmed a real visit (engaged), and never if it reported
+// being automated. Loads from before the bot filter (engaged null) still count.
+const counted = (v: { engaged?: boolean | null; automated?: boolean | null }) => v.engaged !== false && !v.automated;
 
 export function compute(rows: Rows, now: Date, demo = false, missing: string[] = []): Dashboard {
   const days = lastDays(30, now);
@@ -275,8 +281,11 @@ export function compute(rows: Rows, now: Date, demo = false, missing: string[] =
   }));
   const viaTemplate = new Set(subs.filter((s) => (s.source_path || "").startsWith("/vision-board-template")).map((s) => s.email.toLowerCase())).size;
 
-  // Visitors
-  const views = rows.views.map((v) => ({ ...v, day: pacificDate(v.created_at) }));
+  // Visitors (bots left out: browsers with no confirmed visit)
+  const allViews = rows.views.map((v) => ({ ...v, day: pacificDate(v.created_at) }));
+  const views = allViews.filter(counted);
+  const realIds = new Set(views.filter((v) => v.day >= start30).map((v) => v.visitor_id));
+  const bots30 = new Set(allViews.filter((v) => v.day >= start30 && !realIds.has(v.visitor_id)).map((v) => v.visitor_id)).size;
   const firstSeen = new Map<string, string>();
   for (const v of rows.visitors) firstSeen.set(v.id, pacificDate(v.first_seen));
   for (const v of views) if (!firstSeen.has(v.visitor_id) || v.day < firstSeen.get(v.visitor_id)!) firstSeen.set(v.visitor_id, v.day);
@@ -356,6 +365,7 @@ export function compute(rows: Rows, now: Date, demo = false, missing: string[] =
       mauPrev,
       stickiness: mau ? avgDaily / mau : 0,
       views30: recentViews.length,
+      bots30,
     },
     audience: {
       countries: tally(uniq.map((v) => countryName(v.country)), 8),

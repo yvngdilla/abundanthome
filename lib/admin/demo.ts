@@ -65,6 +65,10 @@ export function demoRows(now: Date): Rows {
     }
   }
   rows.accounts = rows.orders.map((o) => ({ created_at: o.created_at, email: o.email })).concat(rows.subscribers.filter(() => r() < 0.2).map((x) => ({ created_at: x.created_at, email: x.email })));
+  // A few scanner-style loads that never confirm, so the "likely bots" note shows in the preview.
+  for (let i = 0; i < 14; i++) {
+    rows.views.push({ visitor_id: `bot-${i}`, path: "/", referrer_host: null, utm_source: null, country: "FR", region: null, device: "desktop", created_at: new Date(now.getTime() - (i % 9) * DAY - 3600_000).toISOString(), engaged: false });
+  }
   rows.visitors = pool.map((p) => ({ id: p.id, first_seen: new Date(p.first).toISOString(), first_referrer_host: p.ref[0], first_utm_source: p.ref[1] }));
   return rows;
 }

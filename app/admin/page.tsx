@@ -72,7 +72,10 @@ export default async function AdminPage() {
                 { key: "new", label: "New (first week)", color: C.fresh },
               ]}
             />
-            <p className="adm-chart-note">Page-load tracking since Nov 14, 2026. Each browser counts once per day.</p>
+            <p className="adm-chart-note">
+              Page-load tracking since Nov 14, 2026. Each browser counts once per day. A visit counts once the page has been open about 3 seconds or the person scrolls or taps
+              {d.active.bots30 > 0 ? <>; <strong>{d.active.bots30.toLocaleString()} likely {d.active.bots30 === 1 ? "bot" : "bots"}</strong> left out in the last 30 days.</> : "."}
+            </p>
           </section>
         </div>
 

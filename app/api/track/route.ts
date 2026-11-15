@@ -30,6 +30,17 @@ export async function POST(req: Request) {
     return ok;
   }
 
+  const key = clean(body.k, 64);
+
+  // The page has been on screen for a few seconds, or the person interacted: count the view.
+  if (body.type === "engaged") {
+    if (key) {
+      const { error } = await db.from("page_views").update({ engaged: true }).eq("view_key", key).eq("visitor_id", visitor).eq("engaged", false);
+      if (error) console.error("track: engaged update failed", error.message);
+    }
+    return ok;
+  }
+
   const path = clean(body.path, 300);
   if (!path || !path.startsWith("/") || path.startsWith("/admin")) return ok;
   const g = geo(req);
@@ -39,7 +50,7 @@ export async function POST(req: Request) {
     { id: visitor, first_path: path, first_referrer_host: ref, first_utm_source: clean(body.utm_source, 100), country: g.country, device: dev },
     { onConflict: "id", ignoreDuplicates: true },
   );
-  const { error } = await db.from("page_views").insert({
+  const row = {
     visitor_id: visitor,
     path,
     referrer_host: ref,
@@ -50,7 +61,10 @@ export async function POST(req: Request) {
     region: g.region,
     city: g.city,
     device: dev,
-  });
+  };
+  // New loads start unconfirmed (engaged = false) until the browser confirms the visit.
+  let { error } = await db.from("page_views").insert({ ...row, view_key: key, engaged: false, automated: body.auto === true });
+  if (error && /view_key|engaged|automated/.test(error.message)) ({ error } = await db.from("page_views").insert(row));
   if (error) console.error("track: insert failed", error.message);
   return ok;
 }
