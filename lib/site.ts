@@ -12,6 +12,8 @@ export const site = {
   mantra: "There is nothing you can't do, be or have.",
   // Where contact form messages go, and the address shown on the contact page.
   contactEmail: "connect@abundanthomedesign.com",
+  // Who gets the "New order" email for every purchase.
+  orderAlertEmail: "nancy@abundanthomedesign.com",
   instagram: "https://www.instagram.com/abundant.home/",
   pinterest: "https://www.pinterest.com/abundant_home/",
   // The January reset challenge start date. Change here to move it everywhere.
