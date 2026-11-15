@@ -88,7 +88,7 @@ Hi,
 
 Look at your vision board for a minute and notice the colors, not the pictures. Most people find two or three colors showing up again and again.
 
-That is your palette. It is the color of the life you are calling in, and it belongs in your home: on a wall, in your bedding, in one object you see every day.
+That is your palette. It is the color of the life you are manifesting, and it belongs in your home: on a wall, in your bedding, in one object you see every day.
 
 [How to choose bedroom colors with intention](${u}${pages.bedroomColors.path})
 
@@ -104,7 +104,7 @@ Hi,
 
 Over the last ten days I have shared the short version of how I make a vision board. The long version lives in my Vision Board Workbook, the same one my Guide students use.
 
-It walks you through writing one page about the life you are calling in, then building a board that says exactly that and hanging it where it works on you every day. One afternoon, with fill-in pages all the way.
+It walks you through writing one page about the life you are manifesting, then building a board that says exactly that and hanging it where it works on you every day. One afternoon, with fill-in pages all the way.
 
 ${vb.includes.map((i) => "- " + i).join("\n")}
 

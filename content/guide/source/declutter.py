@@ -8,7 +8,7 @@ pages.append(page(1, S, f'''
 <div class="eyebrow">Start here</div>
 <h2>Hello, beautiful you!</h2>
 <p class="lede">By the end of this workbook you will know what your home is telling you, you will have cleared what is in your way, and everything you keep will have a home of its own.</p>
-<p>I must confess: I love my stuff. My desk is covered in fabric, rocks, photos and feathers, and they inspire me. So this is not about owning as little as possible. Not all clutter is created equal. It is about letting go of the things that block you, and making room for what you are calling in.</p>
+<p>I must confess: I love my stuff. My desk is covered in fabric, rocks, photos and feathers, and they inspire me. So this is not about owning as little as possible. Not all clutter is created equal. It is about letting go of the things that block you, and making room for what you are manifesting.</p>
 <p>Work at your own pace. Fifteen minutes is enough to start, and one cleared drawer can change how you feel about a whole room.</p>
 <div class="facts">
   <div class="fact"><div class="k">Part 1 · Look</div><div class="v">One walk through your home</div></div>
@@ -25,7 +25,7 @@ pages.append(page(2, S, f'''
 <h3 style="margin-top:0">See your home the way it makes you feel</h3>
 <p>Everything in your home sends a message, about you and to you. Before you change anything, find out what it is saying. Hold the picture of your new life gently in your heart, then walk through your home the way you do when you arrive.</p>
 <p><strong>Start at the way in.</strong> The driveway, the hallway, the front door. If the energy can’t get past the front door, it won’t reach your bedroom. In each area, ask:</p>
-{ol(["How do I feel as I walk into this space?", "Is anything blocking my way, like a bookcase, a pile or a chair?", "Is there anything here that bothers me?", "Do I feel supported and safe here?", "What do I smell and hear?", "Does this look like the life I am calling in?"])}
+{ol(["How do I feel as I walk into this space?", "Is anything blocking my way, like a bookcase, a pile or a chair?", "Is there anything here that bothers me?", "Do I feel supported and safe here?", "What do I smell and hear?", "Does this look like the life I am manifesting?"])}
 <p class="pointer">Write your answers on <b>My reality check</b>, page 6. Don’t be surprised if feelings come up. Be gentle with yourself.</p>
 {note("Art in the garage", '<p style="margin:0">I have a $25 thrift store painting hanging in my garage, where I can see it from the driver’s seat. Every time I pull in, I think: I have art in my garage, that’s what wealthy people do! A small thing at the way in sets the tone for everything after it.</p>')}
 '''))

@@ -35,7 +35,7 @@ export default function Page() {
     >
       <p>
         I have been an interior designer in Los Angeles for more than twenty years, and I usually have two or three
-        vision boards going at once. Friends and clients have used theirs to call in a new home, a dream job and a
+        vision boards going at once. Friends and clients have used theirs to manifest a new home, a dream job and a
         sauna for a new house. What their boards had in common was not glitter or a perfect grid. Each one was
         specific, it was easy to see every day, and it made the person feel something when they looked at it.
       </p>
@@ -54,7 +54,7 @@ export default function Page() {
 
       <h2 id="life">Vision board ideas for every part of your life</h2>
       <p>
-        Before you cut a single picture, decide what you are calling in. A board with one clear message works better
+        Before you cut a single picture, decide what you are manifesting. A board with one clear message works better
         than a board that tries to hold everything. Pick the two or three areas below that matter most this year.
       </p>
 

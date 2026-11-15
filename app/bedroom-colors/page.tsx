@@ -181,7 +181,7 @@ export default function Page() {
       <h2 id="build">Build your bedroom palette in 3 steps</h2>
       <ol>
         <li>
-          <strong>Name your intention.</strong> Decide how you want to feel in the room and what you are calling in.
+          <strong>Name your intention.</strong> Decide how you want to feel in the room and what you are manifesting.
           Rest? Love? A bolder year? Write it down in one sentence.
         </li>
         <li>

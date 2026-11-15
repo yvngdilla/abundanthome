@@ -8,7 +8,7 @@ pages.append(page(1, S, f'''
 <div class="eyebrow">Start here</div>
 <h2>Hello, my darling co&#8209;creator!</h2>
 <p class="lede">By the end of this workbook you will have one Style Word: a word you make up that describes how your home should feel. Then you will use it to make every choice, from paint to pillows.</p>
-<p>I’m not about pretty pictures or this year’s trends. A home copied from a showroom tells someone else’s story. Your home should tell the story of the life you are calling in, and your style is how that life looks and feels.</p>
+<p>I’m not about pretty pictures or this year’s trends. A home copied from a showroom tells someone else’s story. Your home should tell the story of the life you are manifesting, and your style is how that life looks and feels.</p>
 <p><strong>You do not need to own a home for this to work.</strong> Renting, in a dorm, living out of a suitcase: the way you dress your space is always yours to choose, and it doesn’t take a big budget.</p>
 <div class="facts">
   <div class="fact"><div class="k">Part 1 · Remember it</div><div class="v">20 minutes</div></div>

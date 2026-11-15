@@ -30,7 +30,7 @@ export const products: Record<string, Product> = {
     intro:
       "Most vision boards fail for one reason: they start with pictures. Nancy's method starts with words. In one afternoon you write the life you want as if you already live it, build a board that says exactly that, and put it where it works on you every day.",
     includes: [
-      "Part 1, Write it: six questions and one page that describes the life you are calling in",
+      "Part 1, Write it: six questions and one page that describes the life you are manifesting",
       "Part 2, Build it: five steps and a designer's eye for a board that says exactly that",
       "Part 3, Live with it: where to hang it and the two-minute daily habit",
       "Five printable fill-in pages, from your vision page to an arrivals log",
@@ -47,7 +47,7 @@ export const products: Record<string, Product> = {
     slug: "define-your-style-workbook",
     kind: "workbook",
     name: "The Define Your Style Workbook",
-    short: "Find the style that matches the life you are calling in, not this year's trend.",
+    short: "Find the style that matches the life you are manifesting, not this year's trend.",
     price: 1700,
     key: "Key 2 of The Guide to Living in Abundance",
     accent: "earth",

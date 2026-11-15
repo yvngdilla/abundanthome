@@ -63,8 +63,8 @@ export default function Home() {
             <h1>Your <span className="home-word">home</span> is the key to manifesting more</h1>
             <p className="lede" style={{ marginTop: 20 }}>
               You journal. You script. You made the vision board. Then you walk back into a room that tells the old
-              story. Interior designer {site.author.name} shows you how to make your home part of what you are calling
-              in.
+              story. Interior designer {site.author.name} shows you how to make your home part of what you are
+              manifesting.
             </p>
             <div className="btn-row">
               <Link className="btn" href={pages.template.path}>Make your free vision board</Link>
@@ -73,7 +73,7 @@ export default function Home() {
             <p className="hero-note">Free to start. Works in a rental. No renovation required.</p>
           </div>
           <div className="arch-panel" aria-hidden="true">
-            <p className="serif">Make room for what you are calling in.</p>
+            <p className="serif">Make room for what you are manifesting.</p>
           </div>
         </div>
       </section>
