@@ -15,17 +15,29 @@ export type Rows = {
   subscribers: { email: string; list: string; source_path: string | null; landing_path?: string | null; referrer: string | null; utm_source: string | null; country?: string | null; region?: string | null; device?: string | null; created_at: string; unsubscribed_at?: string | null }[];
   views: { visitor_id: string; path: string; referrer_host: string | null; utm_source: string | null; country: string | null; region: string | null; device: string | null; created_at: string }[];
   visitors: { id: string; first_seen: string; first_referrer_host: string | null; first_utm_source: string | null }[];
-  orders: { product: string; amount_cents: number | null; created_at: string }[];
+  orders: { email?: string | null; product: string; amount_cents: number | null; created_at: string }[];
   downloads: { kind: string; item: string; created_at: string }[];
-  accounts?: { created_at: string }[];
+  accounts?: { created_at: string; email?: string | null }[];
 };
 
 export type Dashboard = {
   demo: boolean;
   missing: string[];
   days: string[]; // 30 Pacific dates, oldest first
+  // People who gave us an email (subscriber, account or buyer), counted once each, like
+  // Grey Market's "New Profiles": new per day plus running totals.
+  growth: {
+    perDay: { date: string; new: number; total: number; accounts: number; buyers: number }[];
+    new30: number;
+    prev30: number;
+    total: number;
+    accounts: number;
+    buyers: number;
+    viaTemplate: number;
+  };
   signups: {
     perDay: { date: string; "vision-board": number; "declutter-challenge": number }[];
+    lists: Count[];
     last30: number;
     prev30: number;
     total: number;
@@ -180,7 +192,7 @@ async function load(db: SupabaseClient, now: Date): Promise<{ rows: Rows; missin
   }
   const views = await fetchAll<Rows["views"][number]>(db, "page_views", "visitor_id,path,referrer_host,utm_source,country,region,device,created_at", since);
   if (views.missing) missing.push("page_views");
-  const orders = await fetchAll<Rows["orders"][number]>(db, "orders", "product,amount_cents,created_at");
+  const orders = await fetchAll<Rows["orders"][number]>(db, "orders", "email,product,amount_cents,created_at");
   if (orders.missing) missing.push("orders");
   let downloads = await fetchAll<Rows["downloads"][number] & { visitor_id?: string | null }>(db, "downloads", "kind,item,visitor_id,created_at");
   if (downloads.missing) missing.push("downloads");
@@ -205,11 +217,11 @@ async function load(db: SupabaseClient, now: Date): Promise<{ rows: Rows; missin
     visitors.push(...((data ?? []) as Rows["visitors"]));
   }
   // Accounts (Supabase Auth users), counted by sign-up date.
-  const accounts: { created_at: string }[] = [];
+  const accounts: { created_at: string; email: string | null }[] = [];
   for (let page = 1; page <= 50; page++) {
     const { data, error } = await db.auth.admin.listUsers({ page, perPage: 1000 });
     if (error) break;
-    accounts.push(...data.users.map((u) => ({ created_at: u.created_at })));
+    accounts.push(...data.users.map((u) => ({ created_at: u.created_at, email: u.email ?? null })));
     if (data.users.length < 1000) break;
   }
   return { rows: { subscribers: subs.rows, views: views.rows, visitors, orders: orders.rows, downloads: downloads.rows, accounts }, missing };
@@ -235,6 +247,33 @@ export function compute(rows: Rows, now: Date, demo = false, missing: string[] =
     { list: "vision-board", label: "Vision board template" },
     { list: "declutter-challenge", label: "Declutter challenge" },
   ];
+
+  // People (one per email): first time we saw them, first account, first order.
+  const firstOf = (pairs: [string | null | undefined, string][]) => {
+    const m = new Map<string, string>();
+    pairs.forEach(([email, day], i) => {
+      const k = (email || "").toLowerCase() || `#${i}`; // rows without an email still count once
+      if (!m.has(k) || day < m.get(k)!) m.set(k, day);
+    });
+    return [...m.values()];
+  };
+  const accountRows = rows.accounts ?? [];
+  const personDays = firstOf([
+    ...subs.map((s) => [s.email, s.day] as [string, string]),
+    ...accountRows.map((a) => [a.email, pacificDate(a.created_at)] as [string | null | undefined, string]),
+    ...rows.orders.map((o) => [o.email, pacificDate(o.created_at)] as [string | null | undefined, string]),
+  ]);
+  const accountDays = accountRows.map((a) => pacificDate(a.created_at));
+  const buyerDays = firstOf(rows.orders.map((o) => [o.email, pacificDate(o.created_at)]));
+  const upTo = (list: string[], d: string) => list.filter((x) => x <= d).length;
+  const growthPerDay = days.map((date) => ({
+    date,
+    new: personDays.filter((x) => x === date).length,
+    total: upTo(personDays, date),
+    accounts: upTo(accountDays, date),
+    buyers: upTo(buyerDays, date),
+  }));
+  const viaTemplate = new Set(subs.filter((s) => (s.source_path || "").startsWith("/vision-board-template")).map((s) => s.email.toLowerCase())).size;
 
   // Visitors
   const views = rows.views.map((v) => ({ ...v, day: pacificDate(v.created_at) }));
@@ -283,8 +322,18 @@ export function compute(rows: Rows, now: Date, demo = false, missing: string[] =
     demo,
     missing,
     days,
+    growth: {
+      perDay: growthPerDay,
+      new30: personDays.filter(in30).length,
+      prev30: personDays.filter(inPrev).length,
+      total: personDays.length,
+      accounts: accountDays.length,
+      buyers: buyerDays.length,
+      viaTemplate,
+    },
     signups: {
       perDay: perDaySub,
+      lists: lists.map((l) => ({ label: l.label, count: recentSubs.filter((s) => s.list === l.list).length })).filter((l) => l.count > 0),
       last30: recentSubs.length,
       prev30: subs.filter((s) => inPrev(s.day)).length,
       total: subs.length,

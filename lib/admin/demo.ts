@@ -59,12 +59,12 @@ export function demoRows(now: Date): Rows {
       if (r() < 0.012) {
         const product = pick(r, [["vision-board-workbook", 5], ["declutter-workbook", 3], ["color-workbook", 2], ["define-your-style-workbook", 2], ["room-review", 1]]);
         const amount = { "vision-board-workbook": 1900, "declutter-workbook": 1900, "color-workbook": 1700, "define-your-style-workbook": 1700, "room-review": 29700 }[product]!;
-        rows.orders.push({ product, amount_cents: amount, created_at: at });
+        rows.orders.push({ email: `${p.id}@example.com`, product, amount_cents: amount, created_at: at });
         if (product !== "room-review") rows.downloads.push({ kind: "workbook", item: product, created_at: at });
       }
     }
   }
-  rows.accounts = rows.orders.map((o) => ({ created_at: o.created_at })).concat(rows.subscribers.filter(() => r() < 0.2).map((x) => ({ created_at: x.created_at })));
+  rows.accounts = rows.orders.map((o) => ({ created_at: o.created_at, email: o.email })).concat(rows.subscribers.filter(() => r() < 0.2).map((x) => ({ created_at: x.created_at, email: x.email })));
   rows.visitors = pool.map((p) => ({ id: p.id, first_seen: new Date(p.first).toISOString(), first_referrer_host: p.ref[0], first_utm_source: p.ref[1] }));
   return rows;
 }

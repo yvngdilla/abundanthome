@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/admin/auth";
 import { getDashboard } from "@/lib/admin/data";
-import { BarList, Stat, StackedColumns } from "@/components/admin/charts";
+import { BarList, GrowthChart, Stat, StackedColumns } from "@/components/admin/charts";
+import { adminEvents } from "@/lib/admin/events";
 import { MarkStaff } from "@/components/admin/MarkStaff";
 
 export const dynamic = "force-dynamic";
@@ -10,6 +11,8 @@ export const metadata: Metadata = { title: "Admin", robots: { index: false, foll
 
 // Chart colors: brand-family hues, checked for color-blind separation (see the dataviz validator).
 const C = { returning: "#2f5d7c", fresh: "#7aa067", vision: "#2f5d7c", declutter: "#c98a3d", bar: "#2f5d7c", warm: "#c98a3d", green: "#7aa067" };
+// Sign-ups chart lines (accounts and buyers pass the color-blind check; total is ink, new per day a soft slate area).
+const G = { daily: "#5b6b7a", total: "#23313f", accounts: "#c47a2b", buyers: "#2b6ea3", start: "#4d8f5c", end: "#b5523b" };
 
 const pct = (n: number) => `${Math.round(n * 100)}%`;
 const money = (cents: number) => "$" + Math.round(cents / 100).toLocaleString("en-US");
@@ -39,23 +42,16 @@ export default async function AdminPage() {
 
         <div className="adm-grid2">
           <section className="adm-panel">
-            <h2>Email sign-ups</h2>
-            <p className="adm-sub">New subscribers per day, by list</p>
-            <div className="adm-stats">
-              <Stat label="New sign-ups" value={d.signups.last30.toLocaleString()} delta={d.signups.last30 - d.signups.prev30} note="vs prior 30 days" />
-              <Stat label="Subscribed" value={d.signups.active.toLocaleString()} note={`${d.signups.total.toLocaleString()} ever`} />
-              {d.signups.byList.map((l, i) => (
-                <Stat key={l.list} label={l.list === "vision-board" ? "Vision board list" : "Declutter list"} value={l.total.toLocaleString()} note={`+${l.last30} in 30 days`} tone={i === 0 ? "water" : "earth"} />
-              ))}
+            <h2>New sign-ups</h2>
+            <p className="adm-sub">Daily sign-ups and running total · last 30 days</p>
+            <div className="adm-stats adm-stats5">
+              <Stat label="New" value={d.growth.new30.toLocaleString()} delta={d.growth.new30 - d.growth.prev30} note="vs prior 30 days" />
+              <Stat label="Total" value={d.growth.total.toLocaleString()} note="people, all time" />
+              <Stat label="Accounts" value={d.growth.accounts.toLocaleString()} note="made an account" color={G.accounts} />
+              <Stat label="Buyers" value={d.growth.buyers.toLocaleString()} note="bought something" color={G.buyers} />
+              <Stat label="Via template" value={d.growth.viaTemplate.toLocaleString()} note="all time" />
             </div>
-            <StackedColumns
-              label="Email sign-ups per day"
-              data={d.signups.perDay}
-              series={[
-                { key: "vision-board", label: "Vision board template", color: C.vision },
-                { key: "declutter-challenge", label: "Declutter challenge", color: C.declutter },
-              ]}
-            />
+            <GrowthChart label="New sign-ups per day and running totals" data={d.growth.perDay} events={adminEvents} colors={G} />
           </section>
 
           <section className="adm-panel">
@@ -70,11 +66,13 @@ export default async function AdminPage() {
             <StackedColumns
               label="Daily active visitors, new and returning"
               data={d.active.perDay}
+              labelAll
               series={[
                 { key: "returning", label: "Returning", color: C.returning },
                 { key: "new", label: "New (first week)", color: C.fresh },
               ]}
             />
+            <p className="adm-chart-note">Page-load tracking since Nov 14, 2026. Each browser counts once per day.</p>
           </section>
         </div>
 
@@ -82,6 +80,7 @@ export default async function AdminPage() {
           <h2>Where sign-ups come from</h2>
           <p className="adm-sub">Last 30 days. Channel is how the person first arrived on the site, not the page they signed up on.</p>
           <div className="adm-grid3">
+            <BarList title="Email list" items={d.signups.lists} color={C.vision} unit="sign-ups" />
             <BarList title="Signed up on" items={d.signups.sourcePages} color={C.bar} unit="sign-ups" />
             <BarList title="Channel" items={d.signups.channels} color={C.warm} unit="sign-ups" />
             <BarList title="Country" items={d.signups.countries} color={C.green} unit="sign-ups" />
