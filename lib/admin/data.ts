@@ -226,7 +226,20 @@ async function load(db: SupabaseClient, now: Date): Promise<{ rows: Rows; missin
     accounts.push(...data.users.map((u) => ({ created_at: u.created_at, email: u.email ?? null })));
     if (data.users.length < 1000) break;
   }
-  return { rows: { subscribers: subs.rows, views: views.rows, visitors, orders: orders.rows, downloads: downloads.rows, accounts }, missing };
+  // Leave out the admins' own email addresses (ADMIN_EMAILS, e.g. Nancy) from sign-ups, accounts and orders.
+  const staffEmails = new Set((process.env.ADMIN_EMAILS || "").split(",").map((e) => e.trim().toLowerCase()).filter(Boolean));
+  const notStaff = (e: string | null | undefined) => !e || !staffEmails.has(e.toLowerCase());
+  return {
+    rows: {
+      subscribers: subs.rows.filter((s) => notStaff(s.email)),
+      views: views.rows,
+      visitors,
+      orders: orders.rows.filter((o) => notStaff(o.email)),
+      downloads: downloads.rows,
+      accounts: accounts.filter((a) => notStaff(a.email)),
+    },
+    missing,
+  };
 }
 
 // A page load counts once the browser confirmed a real visit (engaged), and never if it reported
