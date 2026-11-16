@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { browserAuth } from "@/lib/auth/browser";
 import { track } from "@/lib/track";
+import { Turnstile, TURNSTILE_SITE_KEY } from "@/components/Turnstile";
 
 // Google, or a one-time link by email. No passwords to remember.
 // Apple sign-in is built but hidden until NEXT_PUBLIC_AUTH_APPLE=1 (it needs a paid Apple Developer account).
@@ -11,6 +12,8 @@ export function SignInForm({ next }: { next: string }) {
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
+  const [captcha, setCaptcha] = useState<string | null>(null);
+  const [captchaRound, setCaptchaRound] = useState(0);
   const sb = browserAuth();
   const callback = () => `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`;
 
@@ -27,12 +30,24 @@ export function SignInForm({ next }: { next: string }) {
   async function emailLink(e: React.FormEvent) {
     e.preventDefault();
     if (!sb) return;
+    if (TURNSTILE_SITE_KEY && !captcha) {
+      setState("error");
+      setMessage("Still checking that you're not a robot. Give it a second and try again.");
+      return;
+    }
     setState("sending");
     track("sign_in_start", { method: "email" });
-    const { error } = await sb.auth.signInWithOtp({ email: email.trim(), options: { emailRedirectTo: callback() } });
+    const { error } = await sb.auth.signInWithOtp({ email: email.trim(), options: { emailRedirectTo: callback(), captchaToken: captcha ?? undefined } });
+    setCaptchaRound((n) => n + 1); // the bot-check token works once
     if (error) {
       setState("error");
-      setMessage(/rate/i.test(error.message) ? "Too many tries. Please wait a minute and try again." : "We couldn't send the link. Check the address and try again.");
+      setMessage(
+        /rate/i.test(error.message)
+          ? "Too many tries. Please wait a minute and try again."
+          : /captcha/i.test(error.message)
+            ? "The robot check didn't go through. Please try again."
+            : "We couldn't send the link. Check the address and try again.",
+      );
       return;
     }
     setState("sent");
@@ -66,6 +81,7 @@ export function SignInForm({ next }: { next: string }) {
       <form onSubmit={emailLink} className="signin-email">
         <label htmlFor="signin-email">Email</label>
         <input id="signin-email" type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
+        <Turnstile onToken={setCaptcha} resetKey={captchaRound} />
         <button className="btn" type="submit" disabled={state === "sending"}>{state === "sending" ? "Sending…" : "Email me a sign-in link"}</button>
       </form>
       {state === "error" && <p className="signin-error" role="alert">{message}</p>}
