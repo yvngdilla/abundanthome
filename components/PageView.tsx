@@ -6,10 +6,11 @@ import { rememberFirstTouch, send } from "@/lib/visitor-client";
 
 // Records one page view per page for the admin dashboard (first-party, no cookies, no IP).
 // The load is sent right away as unconfirmed; it is confirmed ("engaged") once the page has been
-// visible for 3 seconds or the person scrolls, taps or types. The dashboard only counts confirmed
-// views, which leaves out scanners and link previews that load a page and leave. Browsers that
-// report being automated are flagged and never confirmed.
-const ENGAGED_MS = 3000;
+// visible for 15 seconds or the person scrolls, taps or types. The dashboard only counts confirmed
+// views, which leaves out scanners and link previews that load a page and leave, and bots that run
+// a real browser and sit on the page for a few seconds. Browsers that report being automated are
+// flagged and never confirmed.
+const ENGAGED_MS = 15000;
 
 export function PageView() {
   const pathname = usePathname();
