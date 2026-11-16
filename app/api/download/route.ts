@@ -20,10 +20,13 @@ export async function GET(req: Request) {
       headers: { "Content-Type": "text/plain; charset=utf-8", "X-Robots-Tag": "noindex" },
     });
   }
-  await supabaseAdmin()
-    ?.from("downloads")
-    .insert({ kind: "workbook", item: product.slug, file: entry.file, stripe_session_id: data.s })
-    .then(({ error }) => error && console.error("download: log failed", error.message));
+  // Links from Stripe test-mode purchases still download, but aren't counted in the admin stats.
+  if (!data.s.startsWith("cs_test_")) {
+    await supabaseAdmin()
+      ?.from("downloads")
+      .insert({ kind: "workbook", item: product.slug, file: entry.file, stripe_session_id: data.s })
+      .then(({ error }) => error && console.error("download: log failed", error.message));
+  }
   const bytes = await readFile(path.join(process.cwd(), "content", "guide", "pdfs", entry.file));
   const name = `Abundant Home - ${entry.label}.pdf`;
   return new Response(new Uint8Array(bytes), {
