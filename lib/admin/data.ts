@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { supabaseAdmin } from "@/lib/supabase";
 import { products } from "@/lib/shop";
 import { demoRows } from "@/lib/admin/demo";
+import { staffEmailSet } from "@/lib/admin/staff";
 
 // Everything the admin dashboard shows, computed from the database in one pass.
 // Days are Pacific time. Windows: the last 30 days, compared with the 30 before.
@@ -226,8 +227,8 @@ async function load(db: SupabaseClient, now: Date): Promise<{ rows: Rows; missin
     accounts.push(...data.users.map((u) => ({ created_at: u.created_at, email: u.email ?? null })));
     if (data.users.length < 1000) break;
   }
-  // Leave out the admins' own email addresses (ADMIN_EMAILS, e.g. Nancy) from sign-ups, accounts and orders.
-  const staffEmails = new Set((process.env.ADMIN_EMAILS || "").split(",").map((e) => e.trim().toLowerCase()).filter(Boolean));
+  // Leave out the team's own email addresses (lib/admin/staff.ts plus ADMIN_EMAILS) from sign-ups, accounts and orders.
+  const staffEmails = staffEmailSet();
   const notStaff = (e: string | null | undefined) => !e || !staffEmails.has(e.toLowerCase());
   return {
     rows: {
