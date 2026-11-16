@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { site } from "@/lib/site";
 import { clean, device, geo, isBot, referrerHost } from "@/lib/visitor";
+import { knownVisitor } from "@/lib/profiles";
 
 // First-party page views and free downloads for the admin dashboard.
 // Only production traffic is recorded; bots and Do Not Track / Global Privacy Control are skipped.
@@ -26,7 +27,7 @@ export async function POST(req: Request) {
 
   if (body.type === "download") {
     const item = clean(body.item, 80);
-    if (item) await db.from("downloads").insert({ kind: "template", item, visitor_id: visitor });
+    if (item) await db.from("downloads").insert({ kind: "template", item, visitor_id: await knownVisitor(db, visitor) });
     return ok;
   }
 
@@ -37,6 +38,8 @@ export async function POST(req: Request) {
     if (key) {
       const { error } = await db.from("page_views").update({ engaged: true }).eq("view_key", key).eq("visitor_id", visitor).eq("engaged", false);
       if (error) console.error("track: engaged update failed", error.message);
+      // A browser once marked as a bot that now behaves like a person counts as one again.
+      else await db.from("visitors").update({ kind: "human" }).eq("id", visitor).eq("kind", "bot");
     }
     return ok;
   }
@@ -50,6 +53,7 @@ export async function POST(req: Request) {
     { id: visitor, first_path: path, first_referrer_host: ref, first_utm_source: clean(body.utm_source, 100), country: g.country, device: dev },
     { onConflict: "id", ignoreDuplicates: true },
   );
+  if (body.auto === true) await db.from("visitors").update({ kind: "bot" }).eq("id", visitor).eq("kind", "human");
   const row = {
     visitor_id: visitor,
     path,

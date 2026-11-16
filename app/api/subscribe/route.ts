@@ -3,6 +3,7 @@ import { supabaseAdmin } from "@/lib/supabase";
 import { emails, welcomeKey, type ListName } from "@/lib/email/content";
 import { device, geo } from "@/lib/visitor";
 import { deliver } from "@/lib/email/deliver";
+import { ensureProfile, knownVisitor } from "@/lib/profiles";
 
 const LISTS = new Set(["declutter-challenge", "vision-board"]);
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -45,7 +46,9 @@ export async function POST(req: Request) {
     utm_campaign: clip(body.utm_campaign, 100),
   };
   // Analytics columns come from a later migration; until it is applied, save the sign-up without them.
-  const extra = { ...geo(req), device: device(req), visitor_id: clip(body.v, 64), landing_path: clip(body.landing, 300) };
+  const visitor = await knownVisitor(db, clip(body.v, 64));
+  const profile = await ensureProfile(db, email, visitor);
+  const extra = { ...geo(req), device: device(req), visitor_id: visitor, profile_id: profile, landing_path: clip(body.landing, 300) };
   const save = (row: object) => db.from("subscribers").upsert(row, { onConflict: "email,list", ignoreDuplicates: true }).select("id");
   let { data, error } = await save({ ...base, ...extra });
   if (error && /column/i.test(error.message)) ({ data, error } = await save(base));

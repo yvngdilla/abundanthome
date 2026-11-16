@@ -200,24 +200,30 @@ async function load(db: SupabaseClient, now: Date): Promise<{ rows: Rows; missin
   let downloads = await fetchAll<Rows["downloads"][number] & { visitor_id?: string | null }>(db, "downloads", "kind,item,visitor_id,created_at");
   if (downloads.missing) missing.push("downloads");
 
-  // Leave out browsers that have opened the admin (Nancy's and Colston's own visits).
-  const { data: staffRows } = await db.from("staff_visitors").select("id");
-  const staff = new Set((staffRows ?? []).map((r: { id: string }) => r.id));
-  if (staff.size) {
-    views.rows = views.rows.filter((v) => !staff.has(v.visitor_id));
-    downloads = { ...downloads, rows: downloads.rows.filter((d) => !d.visitor_id || !staff.has(d.visitor_id)) };
-  }
-
-  // First-seen dates for the visitors in the window, in batches.
-  const ids = [...new Set(views.rows.map((v) => v.visitor_id))];
-  const visitors: Rows["visitors"] = [];
+  // The visitors behind those views and downloads, in batches: first-seen dates, and what kind of
+  // browser each is (human, bot or staff).
+  const ids = [...new Set([...views.rows.map((v) => v.visitor_id), ...downloads.rows.map((d) => d.visitor_id).filter((x): x is string => Boolean(x))])];
+  let visitors: (Rows["visitors"][number] & { kind?: string | null })[] = [];
   for (let i = 0; i < ids.length && !views.missing; i += 300) {
-    const { data, error } = await db.from("visitors").select("id,first_seen,first_referrer_host,first_utm_source").in("id", ids.slice(i, i + 300));
+    const { data, error } = await db.from("visitors").select("id,first_seen,first_referrer_host,first_utm_source,kind").in("id", ids.slice(i, i + 300));
     if (error) {
       missing.push("visitors");
       break;
     }
-    visitors.push(...((data ?? []) as Rows["visitors"]));
+    visitors.push(...((data ?? []) as typeof visitors));
+  }
+  // Staff browsers (anyone who has opened the admin) are left out entirely. Bot browsers stay in as
+  // unconfirmed loads, so they are counted as bots and nowhere else.
+  const staff = new Set(visitors.filter((v) => v.kind === "staff").map((v) => v.id));
+  const bots = new Set(visitors.filter((v) => v.kind === "bot").map((v) => v.id));
+  if (staff.size) {
+    views.rows = views.rows.filter((v) => !staff.has(v.visitor_id));
+    downloads = { ...downloads, rows: downloads.rows.filter((d) => !d.visitor_id || !staff.has(d.visitor_id)) };
+    visitors = visitors.filter((v) => !staff.has(v.id));
+  }
+  if (bots.size) {
+    views.rows = views.rows.map((v) => (bots.has(v.visitor_id) ? { ...v, engaged: false } : v));
+    downloads = { ...downloads, rows: downloads.rows.filter((d) => !d.visitor_id || !bots.has(d.visitor_id)) };
   }
   // Accounts (Supabase Auth users), counted by sign-up date.
   const accounts: { created_at: string; email: string | null }[] = [];

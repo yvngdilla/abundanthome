@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { track } from "@/lib/track";
+import { visitorId } from "@/lib/visitor-client";
 
 // Starts Stripe Checkout for one product. Shows a friendly note if checkout is not switched on yet.
 export function BuyButton({
@@ -25,7 +26,7 @@ export function BuyButton({
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ product }),
+        body: JSON.stringify({ product, v: visitorId() }),
       });
       const json = await res.json().catch(() => ({}));
       if (res.ok && json.url) {

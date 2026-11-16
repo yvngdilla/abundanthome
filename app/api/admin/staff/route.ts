@@ -15,5 +15,8 @@ export async function POST(req: Request) {
   if (!db) return NextResponse.json({ ok: false });
   const { error } = await db.from("staff_visitors").upsert({ id }, { onConflict: "id", ignoreDuplicates: true });
   if (error) console.error("staff: upsert failed", error.message);
+  // The visitors table is what the dashboard reads: this browser is staff from now on.
+  const { error: kindError } = await db.from("visitors").upsert({ id, kind: "staff" }, { onConflict: "id" });
+  if (kindError) console.error("staff: visitor kind failed", kindError.message);
   return NextResponse.json({ ok: !error });
 }

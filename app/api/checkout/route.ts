@@ -28,6 +28,7 @@ export async function POST(req: Request) {
       successUrl: `${site.url}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
       cancelUrl: `${site.url}${back}`,
       email: user?.email ?? undefined, // signed in: the order lands in their account automatically
+      visitor: typeof body.v === "string" && /^[A-Za-z0-9-]{8,64}$/.test(body.v) ? body.v : undefined, // ties the sale to the visit that led to it
     });
     if (!session.url) throw new Error("no checkout url");
     return NextResponse.json({ url: session.url });

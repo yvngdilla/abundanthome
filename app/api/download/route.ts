@@ -22,10 +22,14 @@ export async function GET(req: Request) {
   }
   // Links from Stripe test-mode purchases still download, but aren't counted in the admin stats.
   if (!data.s.startsWith("cs_test_")) {
-    await supabaseAdmin()
-      ?.from("downloads")
-      .insert({ kind: "workbook", item: product.slug, file: entry.file, stripe_session_id: data.s })
-      .then(({ error }) => error && console.error("download: log failed", error.message));
+    const db = supabaseAdmin();
+    if (db) {
+      const { data: order } = await db.from("orders").select("id").eq("stripe_session_id", data.s).maybeSingle();
+      const { error } = await db
+        .from("downloads")
+        .insert({ kind: "workbook", item: product.slug, file: entry.file, stripe_session_id: data.s, order_id: order?.id ?? null });
+      if (error) console.error("download: log failed", error.message);
+    }
   }
   const bytes = await readFile(path.join(process.cwd(), "content", "guide", "pdfs", entry.file));
   const name = `Abundant Home - ${entry.label}.pdf`;

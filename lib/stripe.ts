@@ -49,6 +49,7 @@ export function createCheckout(opts: {
   successUrl: string;
   cancelUrl: string;
   email?: string;
+  visitor?: string;
 }): Promise<CheckoutSession> {
   return call<CheckoutSession>("POST", "/checkout/sessions", {
     mode: "payment",
@@ -58,6 +59,7 @@ export function createCheckout(opts: {
     "line_items[0][price_data][product_data][name]": opts.name,
     "line_items[0][price_data][product_data][description]": opts.description,
     "metadata[product]": opts.product,
+    "metadata[visitor]": opts.visitor,
     "payment_intent_data[metadata][product]": opts.product,
     "payment_intent_data[description]": `Abundant Home: ${opts.name}`,
     customer_email: opts.email,

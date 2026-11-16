@@ -6,6 +6,7 @@ import type { CheckoutSession } from "@/lib/stripe";
 import { deliver } from "@/lib/email/deliver";
 import { sendEmail } from "@/lib/email/send";
 import { workbookDelivery, roomReviewConfirmation } from "@/lib/email/content";
+import { ensureProfile, knownVisitor } from "@/lib/profiles";
 
 export type Fulfilment = {
   product: Product;
@@ -33,19 +34,19 @@ export async function fulfil(session: CheckoutSession): Promise<Fulfilment | nul
     console.error("orders: Supabase env vars are missing, order not recorded", session.id);
     return { product, email, links };
   }
-  const { data, error } = await db
-    .from("orders")
-    .upsert(
-      {
-        stripe_session_id: session.id,
-        email,
-        product: product.slug,
-        amount_cents: session.amount_total,
-        currency: session.currency,
-      },
-      { onConflict: "stripe_session_id", ignoreDuplicates: true },
-    )
-    .select("id");
+  // The buyer's profile, and the browser that started the checkout (so a sale traces back to a visit).
+  const visitor = await knownVisitor(db, session.metadata?.visitor);
+  const profile = await ensureProfile(db, email, visitor);
+  const base = {
+    stripe_session_id: session.id,
+    email,
+    product: product.slug,
+    amount_cents: session.amount_total,
+    currency: session.currency,
+  };
+  const save = (row: object) => db.from("orders").upsert(row, { onConflict: "stripe_session_id", ignoreDuplicates: true }).select("id");
+  let { data, error } = await save({ ...base, profile_id: profile, visitor_id: visitor });
+  if (error && /column/i.test(error.message)) ({ data, error } = await save(base));
   if (error) {
     console.error("orders: insert failed", error.message);
     return { product, email, links };
